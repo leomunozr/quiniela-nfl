@@ -3,20 +3,19 @@ import Typography from "@mui/material/Typography";
 import RankedList from "./RankedList";
 import Scoreboard from "./Scoreboard";
 import { useEffect, useState } from "react";
-import { Box, Grid2, List, ListItem } from "@mui/material";
+import { Grid2, styled } from "@mui/material";
+import { SCOREBOARD_API } from "./constants";
+import teamsData from "./data/teams";
+import playersRawData from "./data/playersData";
 
-const SCOREBOARD_API =
-  "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
-const TEAMS_API =
-  "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams";
-const DATA_API =
-  "https://script.google.com/macros/s/AKfycbxj-LElv4wuDMgQGEFFN_vMYUAgNxpVDEEgJg98RFJdi88Ec0Lrzlp7Fp9_W2Rp5boywQ/exec";
+const ContainerStyled = styled(Container)`
+  padding-left: 0;
+  padding-right: 0;
+`;
 
 function App() {
-  const [teamsData, setTeamsData] = useState([]);
   const [events, setEvents] = useState([]);
   const [playersData, setPlayersData] = useState([]);
-  const [playersRawData, setPlayersRawData] = useState([]);
   const [week, setWeek] = useState("");
   const [winners, setWinners] = useState([]);
 
@@ -58,25 +57,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const getPlayersData = async () => {
-      const response = await fetch(DATA_API);
-      const data = await response.json();
-      setPlayersRawData(data);
-    };
-    getPlayersData();
-  }, []);
-
-  useEffect(() => {
-    const getTeamsData = async () => {
-      const response = await fetch(TEAMS_API);
-      const data = await response.json();
-      const teams = data.sports[0].leagues[0].teams;
-      setTeamsData(teams);
-    };
-    getTeamsData();
-  }, []);
-
-  useEffect(() => {
     const players = playersRawData?.map((player) => {
       const { nombre, timestamp, ...predictions } = player;
       const teams = Object.values(predictions);
@@ -94,11 +74,11 @@ function App() {
   }, [teamsData, playersRawData]);
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" color="initial">
+    <ContainerStyled maxWidth="lg">
+      <Typography variant="h4" textAlign="center">
         Quiniela NFL
       </Typography>
-      <Typography variant="h5" color="initial">
+      <Typography variant="h5" textAlign="center">
         Semana {week}
       </Typography>
 
@@ -110,12 +90,12 @@ function App() {
 
       <Grid2 container alignContent="center">
         {events?.map((event, index) => (
-          <Grid2 size={{xs: 12}}>
+          <Grid2 size={{ xs: 12 }}>
             <Scoreboard key={`event-${index}`} {...event} />
           </Grid2>
         ))}
       </Grid2>
-    </Container>
+    </ContainerStyled>
   );
 }
 

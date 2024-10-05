@@ -1,20 +1,22 @@
 import { useState } from "react";
-import styled from "styled-components";
+import styled from "@mui/material/styles/styled";
 import { List, ListItem, Typography, Paper } from "@mui/material";
 import PlayerScore from "./PlayerScore";
 
 // Styled component for the Paper container
 const StyledPaper = styled(Paper)`
-  padding: 20px;
-  margin: 20px;
-  background-color: #f5f5f5;
+  padding: 1rem;
 `;
 
 // Styled component for highlighting selected item
 const HighlightedItem = styled(ListItem)`
-  background-color: ${(props) =>
-    props.isSelected ? "#e3f2fd" : "transparent"};
+  background: ${({ isSelected }) => (isSelected ? "#e3f2fd" : "transparent")};
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #e0e0e0;
   }
@@ -44,14 +46,12 @@ const RankedList = ({ playersData }) => {
               isSelected={selectedItem === name}
               onClick={() => handleItemClick(name)}
             >
-              <ListItem>
-                <PlayerScore
-                  name={name}
-                  teams={teams}
-                  wins={wins}
-                  hasMostWins={wins === maxWins}
-                />
-              </ListItem>
+              <PlayerScore
+                name={name}
+                teams={teams}
+                wins={wins}
+                hasMostWins={wins === maxWins}
+              />
             </HighlightedItem>
           );
         })}

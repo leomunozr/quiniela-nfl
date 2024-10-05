@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "@mui/material/styles/styled";
 import { Paper, Typography, Grid2, Stack } from "@mui/material";
 
 // Styled component for the scoreboard container
