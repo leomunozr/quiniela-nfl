@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@mui/material/styles/styled";
 import { Paper, Typography, Grid2, Stack } from "@mui/material";
+import { SCHEDULED } from "./constants";
 
 // Styled component for the scoreboard container
 const ScoreboardContainer = styled(Paper)`
@@ -17,7 +18,7 @@ const Score = styled(Grid2)`
   justify-content: center;
 `;
 
-const getDate = (date) => {
+const GameDate = ({ date }) => {
   const [days, hours] = date
     .toLocaleDateString("es-mx", {
       day: "numeric",
@@ -36,9 +37,20 @@ const getDate = (date) => {
   );
 };
 
+const GameClock = ({ detail }) => {
+  const [clock, quarter] = detail.split(" - ");
+  return (
+    <Stack alignItems="center" display="flex" justifyContent="center" mt={1}>
+      <Typography variant="caption">{clock}</Typography>
+      <Typography variant="caption">{quarter}</Typography>
+    </Stack>
+  );
+};
+
 const Scoreboard = ({ competitions, date, status }) => {
   const [home, away] = competitions[0].competitors;
   const d = new Date(date);
+  const gameStatus = status.type.name;
 
   return (
     <ScoreboardContainer elevation={3}>
@@ -58,26 +70,24 @@ const Scoreboard = ({ competitions, date, status }) => {
             <Typography fontWeight="bold" variant="body">
               {home.score} - {away.score}
             </Typography>
-            {status.type.name === "STATUS_SCHEDULED" ? (
-              getDate(d)
+            {gameStatus === SCHEDULED ? (
+              <GameDate date={d} />
             ) : (
-              <Typography variant="caption">
-                {status.type.shortDetail}
-              </Typography>
+              <GameClock detail={status.type.shortDetail} />
             )}
           </Stack>
         </Score>
 
         <Grid2 size={5} display="flex" justifyContent="flex-end">
           <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="caption" textAlign="right">
-                {away.team.displayName}
-              </Typography>
-              <img src={away.team.logo} alt={away.team.display} height="40px" />
-            </Stack>
-          </Grid2>
+            <Typography variant="caption" textAlign="right">
+              {away.team.displayName}
+            </Typography>
+            <img src={away.team.logo} alt={away.team.display} height="40px" />
+          </Stack>
         </Grid2>
-      </ScoreboardContainer>
+      </Grid2>
+    </ScoreboardContainer>
   );
 };
 
