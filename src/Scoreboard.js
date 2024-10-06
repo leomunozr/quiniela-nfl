@@ -39,7 +39,6 @@ const getDate = (date) => {
 const Scoreboard = ({ competitions, date, status }) => {
   const [home, away] = competitions[0].competitors;
   const d = new Date(date);
-  console.log({ d });
 
   return (
     <ScoreboardContainer elevation={3}>

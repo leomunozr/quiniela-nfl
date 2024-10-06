@@ -40,8 +40,8 @@ const PlayerScore = ({ hasMostWins, name, teams, wins }) => {
             <TeamLogo
               key={`team-logo-${index}`}
               src={team.logo}
-              alt={team.name}
-              title={team.name}
+              alt={team.shortDisplayName}
+              title={team.shortDisplayName}
               winner={team.isWinner}
             />
           ))}

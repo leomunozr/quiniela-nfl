@@ -3,12 +3,10 @@ import styled from "@mui/material/styles/styled";
 import { List, ListItem, Typography, Paper } from "@mui/material";
 import PlayerScore from "./PlayerScore";
 
-// Styled component for the Paper container
 const StyledPaper = styled(Paper)`
   padding: 1rem;
 `;
 
-// Styled component for highlighting selected item
 const HighlightedItem = styled(ListItem)`
   background: ${({ isSelected }) => (isSelected ? "#e3f2fd" : "transparent")};
   padding-left: 0;
@@ -23,7 +21,6 @@ const HighlightedItem = styled(ListItem)`
 `;
 
 const RankedList = ({ playersData }) => {
-  console.log({ playersData });
   const [selectedItem, setSelectedItem] = useState(null);
   const maxWins = Math.max(...playersData?.map((player) => player.wins));
 

@@ -89,11 +89,13 @@ function App() {
       </Typography>
 
       <Grid2 container alignContent="center">
-        {events?.map((event, index) => (
-          <Grid2 size={{ xs: 12 }}>
-            <Scoreboard key={`event-${index}`} {...event} />
-          </Grid2>
-        ))}
+        {events
+          ?.sort?.((a, b) => new Date(a?.date) - new Date(b?.date))
+          ?.map((event, index) => (
+            <Grid2 size={{ xs: 12 }}>
+              <Scoreboard key={`event-${index}`} {...event} />
+            </Grid2>
+          ))}
       </Grid2>
     </ContainerStyled>
   );
