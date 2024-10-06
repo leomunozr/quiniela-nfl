@@ -71,7 +71,7 @@ function App() {
       };
     });
     setPlayersData(players);
-  }, [teamsData, playersRawData]);
+  }, [teamsData, playersRawData, winners]);
 
   return (
     <ContainerStyled maxWidth="lg">
