@@ -18,6 +18,7 @@ function App() {
   const [playersData, setPlayersData] = useState([]);
   const [week, setWeek] = useState("");
   const [winners, setWinners] = useState([]);
+  const [losers, setLosers] = useState([]);
 
   const getLogo = (shortDisplayName) => {
     const found = teamsData?.filter(
@@ -26,11 +27,29 @@ function App() {
     return found?.[0]?.team?.logos?.[0]?.href;
   };
 
+  const isLoser = (shortDisplayName) => {
+    const loser = losers?.find(
+      (loser) => loser?.team?.shortDisplayName === shortDisplayName
+    );
+    return loser?.team?.shortDisplayName === shortDisplayName;
+  };
+
   const isWinner = (shortDisplayName) => {
     const winner = winners?.find(
       (winner) => winner?.team?.shortDisplayName === shortDisplayName
     );
     return winner?.team?.shortDisplayName === shortDisplayName;
+  };
+
+  const getLosers = (events) => {
+    return events?.map((event) => {
+      const game = event.competitions[0];
+      if (game.status.type.name === "STATUS_FINAL") {
+        return game.competitors?.filter(
+          (competitor) => !competitor?.winner
+        )?.[0];
+      }
+    });
   };
 
   const getWinners = (events) => {
@@ -49,7 +68,9 @@ function App() {
       const week = data.week.number;
       const events = data.events;
       const winners = getWinners(events);
+      const losers = getLosers(events);
       setWinners(winners);
+      setLosers(losers);
       setEvents(events);
       setWeek(week);
     };
@@ -65,13 +86,13 @@ function App() {
         teams: teams?.map((team) => ({
           shortDisplayName: team,
           logo: getLogo(team),
-          isWinner: isWinner(team),
+          isLoser: isLoser(team),
         })),
         wins: teams?.filter((team) => isWinner(team))?.length,
       };
     });
     setPlayersData(players);
-  }, [teamsData, playersRawData, winners]);
+  }, [teamsData, playersRawData, losers]);
 
   return (
     <ContainerStyled maxWidth="lg">
@@ -82,7 +103,7 @@ function App() {
         Semana {week}
       </Typography>
 
-      <RankedList playersData={playersData} winners={winners} />
+      <RankedList playersData={playersData} losers={losers} />
 
       <Typography variant="h5" textAlign="center" mt={10}>
         Resultados

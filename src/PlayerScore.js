@@ -19,6 +19,24 @@ const MatchCount = styled.div`
   padding: 5px;
 `;
 
+const Cross = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1.5em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ImgContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PlayerScore = ({ hasMostWins, name, teams, wins }) => {
   return (
     <Grid2 container width="100%" alignItems="center">
@@ -37,13 +55,16 @@ const PlayerScore = ({ hasMostWins, name, teams, wins }) => {
           spacing={3}
         >
           {teams?.map((team, index) => (
-            <TeamLogo
-              key={`team-logo-${index}`}
-              src={team.logo}
-              alt={team.shortDisplayName}
-              title={team.shortDisplayName}
-              winner={team.isWinner}
-            />
+            <ImgContainer>
+              <TeamLogo
+                key={`team-logo-${index}`}
+                src={team.logo}
+                alt={team.shortDisplayName}
+                title={team.shortDisplayName}
+                loser={team.isLoser}
+              />
+              {team.isLoser ? <Cross>💀</Cross> : null}
+            </ImgContainer>
           ))}
         </Stack>
       </Grid2>
