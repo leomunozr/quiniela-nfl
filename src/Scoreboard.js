@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "@mui/material/styles/styled";
 import { Paper, Typography, Grid2, Stack } from "@mui/material";
-import { SCHEDULED } from "./constants";
+import { FINAL, IN_PROGRESS, SCHEDULED } from "./constants";
 
 // Styled component for the scoreboard container
 const ScoreboardContainer = styled(Paper)`
   padding: 1rem;
   margin: 1.2rem 1rem;
-  background-color: #f5f5f5;
+  background-color: ${({ final }) => (final ? "#bebebe" : "#f5f5f5")};
   display: flex;
   align-items: center;
 `;
@@ -53,7 +53,11 @@ const Scoreboard = ({ competitions, date, status }) => {
   const gameStatus = status.type.name;
 
   return (
-    <ScoreboardContainer elevation={3}>
+    <ScoreboardContainer
+      elevation={3}
+      final={gameStatus === FINAL}
+      playing={gameStatus === IN_PROGRESS}
+    >
       <Grid2 container width={"100%"}>
         <Grid2 size={5} display="flex">
           <Stack direction="row" spacing={1} alignItems="center">
