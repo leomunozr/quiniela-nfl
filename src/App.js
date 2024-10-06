@@ -75,10 +75,10 @@ function App() {
 
   return (
     <ContainerStyled maxWidth="lg">
-      <Typography variant="h4" textAlign="center">
+      <Typography variant="h5" textAlign="center">
         Quiniela NFL
       </Typography>
-      <Typography variant="h5" textAlign="center">
+      <Typography variant="h6" textAlign="center">
         Semana {week}
       </Typography>
 
