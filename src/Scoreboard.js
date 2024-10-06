@@ -3,7 +3,6 @@ import styled from "@mui/material/styles/styled";
 import { Paper, Typography, Grid2, Stack } from "@mui/material";
 import { END_PERIOD, FINAL, IN_PROGRESS, SCHEDULED } from "./constants";
 
-// Styled component for the scoreboard container
 const ScoreboardContainer = styled(Paper)`
   padding: 1rem;
   margin: 1.2rem 1rem;

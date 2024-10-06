@@ -113,7 +113,7 @@ function App() {
         {events
           ?.sort?.((a, b) => new Date(a?.date) - new Date(b?.date))
           ?.map((event, index) => (
-            <Grid2 size={{ xs: 12 }}>
+            <Grid2 key={`game-${index}`} size={{ xs: 12 }}>
               <Scoreboard key={`event-${index}`} {...event} />
             </Grid2>
           ))}
