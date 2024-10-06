@@ -42,8 +42,8 @@ const GameClock = ({ detail }) => {
   const [clock, quarter] = detail.split(" - ");
   return (
     <Stack alignItems="center" display="flex" justifyContent="center" mt={1}>
-      <Typography variant="caption">{clock}</Typography>
-      <Typography variant="caption">{quarter}</Typography>
+      <Typography textAlign="center" variant="caption">{clock}</Typography>
+      <Typography textAlign="center" variant="caption">{quarter}</Typography>
     </Stack>
   );
 };
