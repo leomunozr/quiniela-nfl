@@ -7,17 +7,6 @@ const TeamLogo = styled.img`
   background: url(http://wizzfree.com/pix/bg.jpg) fixed;
 `;
 
-const Cross = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 1.5em;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const ImgContainer = styled.div`
   position: relative;
   display: flex;
@@ -41,8 +30,8 @@ const PlayerScore = ({ teams }) => {
             alt={team.shortDisplayName}
             title={team.shortDisplayName}
             loser={team.isLoser}
+            style={{filter: team.isLoser ? 'grayscale(100%) opacity(50%)' : ''}}
           />
-          {team.isLoser ? <Cross>💀</Cross> : null}
         </ImgContainer>
       ))}
     </Stack>
