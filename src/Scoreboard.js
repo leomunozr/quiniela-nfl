@@ -10,6 +10,7 @@ const ScoreboardContainer = styled(Paper)`
   box-shadow: ${({ playing }) => (playing ? "0 0 3px #8BD6A4" : "none")};
   display: flex;
   align-items: center;
+  filter: opacity(50%);
 `;
 
 const Score = styled(Grid2)`
