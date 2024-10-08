@@ -90,7 +90,7 @@ function App() {
         })),
         wins: teams?.filter((team) => isWinner(team))?.length,
       };
-    });
+    }).sort((player1, player2) => player2.wins - player1.wins);
     setPlayersData(players);
   }, [teamsData, playersRawData, losers]);
 
