@@ -71,7 +71,12 @@ const Scoreboard = ({ competitions, date, status }) => {
               alt={home.team.displayName}
               height="40px"
             />
-            <Typography variant="caption">{home.team.displayName}</Typography>
+            <Stack>
+              <Typography variant="caption">{home.team.displayName}</Typography>
+              <Typography variant="caption">
+                ({home.records?.[0].summary})
+              </Typography>
+            </Stack>
           </Stack>
         </Grid2>
         <Score size={2}>
@@ -89,9 +94,14 @@ const Scoreboard = ({ competitions, date, status }) => {
 
         <Grid2 size={5} display="flex" justifyContent="flex-end">
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="caption" textAlign="right">
-              {away.team.displayName}
-            </Typography>
+            <Stack>
+              <Typography variant="caption" textAlign="right">
+                {away.team.displayName}
+              </Typography>
+              <Typography variant="caption" textAlign="right">
+                ({away.records?.[0].summary})
+              </Typography>
+            </Stack>
             <img src={away.team.logo} alt={away.team.display} height="40px" />
           </Stack>
         </Grid2>
