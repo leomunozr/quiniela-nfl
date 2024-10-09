@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import {
@@ -36,19 +36,25 @@ function App() {
     return found?.[0]?.team?.logos?.[0]?.href;
   };
 
-  const isLoser = (shortDisplayName) => {
-    const loser = losers?.find(
-      (loser) => loser?.team?.shortDisplayName === shortDisplayName
-    );
-    return loser?.team?.shortDisplayName === shortDisplayName;
-  };
+  const isLoser = useCallback(
+    (shortDisplayName) => {
+      const loser = losers?.find(
+        (loser) => loser?.team?.shortDisplayName === shortDisplayName
+      );
+      return loser?.team?.shortDisplayName === shortDisplayName;
+    },
+    [losers]
+  );
 
-  const isWinner = (shortDisplayName) => {
-    const winner = winners?.find(
-      (winner) => winner?.team?.shortDisplayName === shortDisplayName
-    );
-    return winner?.team?.shortDisplayName === shortDisplayName;
-  };
+  const isWinner = useCallback(
+    (shortDisplayName) => {
+      const winner = winners?.find(
+        (winner) => winner?.team?.shortDisplayName === shortDisplayName
+      );
+      return winner?.team?.shortDisplayName === shortDisplayName;
+    },
+    [winners]
+  );
 
   const getLosers = (events) =>
     events?.reduce((acc, event) => {
@@ -103,7 +109,7 @@ function App() {
       })
       .sort((player1, player2) => player2.wins - player1.wins);
     setPlayersData(players);
-  }, [teamsData, playersRawData, losers]);
+  }, [isLoser, isWinner, losers]);
 
   return (
     <ContainerStyled maxWidth="lg">
