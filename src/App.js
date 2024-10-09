@@ -1,12 +1,13 @@
+import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import RankedList from "./RankedList";
-import Scoreboard from "./Scoreboard";
-import { useEffect, useState } from "react";
 import { Grid2, styled } from "@mui/material";
-import { SCOREBOARD_API } from "./constants";
-import teamsData from "./data/teams";
+
+import RankedList from "./components/RankedList";
+import Scoreboard from "./components/Scoreboard";
 import playersRawData from "./data/playersData";
+import teamsData from "./data/teams";
+import { SCOREBOARD_API } from "./constants";
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;

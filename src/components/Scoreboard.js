@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@mui/material/styles/styled";
 import { Paper, Typography, Grid2, Stack } from "@mui/material";
-import { END_PERIOD, FINAL, IN_PROGRESS, SCHEDULED } from "./constants";
+import { END_PERIOD, FINAL, IN_PROGRESS, SCHEDULED } from "../constants";
 
 const ScoreboardContainer = styled(Paper)`
   padding: 1rem;

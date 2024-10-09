@@ -26,7 +26,7 @@ const NameColumn = styledMui(TableCell)`
 
 const ResultColumn = styledMui(TableCell)`
   background: white;
-  padding: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.1rem;
   position: sticky;
   right: 0;
   z-index: 1;
