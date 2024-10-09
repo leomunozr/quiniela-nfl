@@ -5,6 +5,7 @@ const TeamLogo = styled.img`
   width: 2em;
   height: 2em;
   background: url(http://wizzfree.com/pix/bg.jpg) fixed;
+  filter: ${({ isLoser }) => (isLoser ? "grayscale(100%) opacity(50%)" : "")};
 `;
 
 const ImgContainer = styled.div`
@@ -30,7 +31,6 @@ const PlayerScore = ({ teams }) => {
             alt={team.shortDisplayName}
             title={team.shortDisplayName}
             loser={team.isLoser}
-            style={{filter: team.isLoser ? 'grayscale(100%) opacity(50%)' : ''}}
           />
         </ImgContainer>
       ))}

@@ -10,7 +10,7 @@ const ScoreboardContainer = styled(Paper)`
   box-shadow: ${({ playing }) => (playing ? "0 0 3px #8BD6A4" : "none")};
   display: flex;
   align-items: center;
-  filter: opacity(50%);
+  filter: ${({ final }) => (final ? "opacity(50%)" : "")};
 `;
 
 const Score = styled(Grid2)`
@@ -42,8 +42,12 @@ const GameClock = ({ detail }) => {
   const [clock, quarter] = detail.split(" - ");
   return (
     <Stack alignItems="center" display="flex" justifyContent="center" mt={1}>
-      <Typography textAlign="center" variant="caption">{clock}</Typography>
-      <Typography textAlign="center" variant="caption">{quarter}</Typography>
+      <Typography textAlign="center" variant="caption">
+        {clock}
+      </Typography>
+      <Typography textAlign="center" variant="caption">
+        {quarter}
+      </Typography>
     </Stack>
   );
 };
