@@ -24,7 +24,7 @@ const HighlightedRow = styled(TableRow)`
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     background: ${({ isSelected }) =>
-      isSelected ? selectedColor : "transparent"};
+      isSelected ? selectedColor : "white"};
     transition: background-color 0.3s ease;
   }
   &:hover {
