@@ -1,13 +1,21 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { Grid2, styled } from "@mui/material";
+import {
+  Grid2,
+  Paper,
+  styled,
+  Table,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 
 import RankedList from "./components/RankedList";
 import Scoreboard from "./components/Scoreboard";
+import { SCOREBOARD_API } from "./constants";
+
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
-import { SCOREBOARD_API } from "./constants";
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;
@@ -42,25 +50,25 @@ function App() {
     return winner?.team?.shortDisplayName === shortDisplayName;
   };
 
-  const getLosers = (events) => {
-    return events?.map((event) => {
+  const getLosers = (events) =>
+    events?.reduce((acc, event) => {
       const game = event.competitions[0];
       if (game.status.type.name === "STATUS_FINAL") {
-        return game.competitors?.filter(
+        const loser = game.competitors?.filter(
           (competitor) => !competitor?.winner
-        )?.[0];
+        );
+        return [...acc, loser];
       }
-    });
-  };
+      return acc;
+    }, []);
 
-  const getWinners = (events) => {
-    return events?.map(
-      (event) =>
-        event?.competitions?.[0]?.competitors?.filter(
-          (competitor) => competitor?.winner
-        )?.[0]
-    );
-  };
+  const getWinners = (events) =>
+    events?.reduce((acc, event) => {
+      const winners = event?.competitions?.[0]?.competitors?.filter(
+        (competitor) => competitor?.winner
+      );
+      return [...acc, winners];
+    }, []);
 
   useEffect(() => {
     const fetchScoreboard = async () => {
@@ -79,19 +87,21 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const players = playersRawData?.map((player) => {
-      const { nombre, timestamp, ...predictions } = player;
-      const teams = Object.values(predictions);
-      return {
-        name: nombre,
-        teams: teams?.map((team) => ({
-          shortDisplayName: team,
-          logo: getLogo(team),
-          isLoser: isLoser(team),
-        })),
-        wins: teams?.filter((team) => isWinner(team))?.length,
-      };
-    }).sort((player1, player2) => player2.wins - player1.wins);
+    const players = playersRawData
+      ?.map((player) => {
+        const { nombre, timestamp, ...predictions } = player;
+        const teams = Object.values(predictions);
+        return {
+          name: nombre,
+          teams: teams?.map((team) => ({
+            shortDisplayName: team,
+            logo: getLogo(team),
+            isLoser: isLoser(team),
+          })),
+          wins: teams?.filter((team) => isWinner(team))?.length,
+        };
+      })
+      .sort((player1, player2) => player2.wins - player1.wins);
     setPlayersData(players);
   }, [teamsData, playersRawData, losers]);
 
@@ -104,7 +114,20 @@ function App() {
         Semana {week}
       </Typography>
 
-      <RankedList playersData={playersData} losers={losers} />
+      {!playersData.length ? (
+        <Paper elevation={3} sx={{ padding: "1rem" }}>
+          <Typography variant="h6" gutterBottom>
+            Posiciones
+          </Typography>
+          <Table>
+            <TableRow>
+              <TableCell>Sin datos</TableCell>
+            </TableRow>
+          </Table>
+        </Paper>
+      ) : (
+        <RankedList playersData={playersData} losers={losers} />
+      )}
 
       <Typography variant="h5" textAlign="center" mt={10}>
         Resultados
