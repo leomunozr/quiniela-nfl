@@ -12,8 +12,24 @@ import {
 } from "@mui/material";
 import PlayerScore from "./PlayerScore";
 
+const hoverColor = "#e0e0e0";
+const selectedColor = "#e3f2fd";
+
 const StyledPaper = styledMui(Paper)`
   padding: 1rem;
+`;
+
+const HighlightedRow = styled(TableRow)`
+  & > * {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background: ${({ isSelected }) =>
+      isSelected ? selectedColor : "transparent"};
+    transition: background-color 0.3s ease;
+  }
+  &:hover {
+    background: ${hoverColor};
+  }
 `;
 
 const NameColumn = styledMui(TableCell)`
@@ -49,7 +65,7 @@ const RankedList = ({ playersData }) => {
   const maxWins = Math.max(...playersData?.map((player) => player.wins));
 
   const handleItemClick = (name) => {
-    setSelectedItem(name);
+    selectedItem === name ? setSelectedItem("") : setSelectedItem(name);
   };
 
   return (
@@ -63,9 +79,10 @@ const RankedList = ({ playersData }) => {
             {playersData?.map((player, index) => {
               const { name, teams, wins } = player;
               return (
-                <TableRow
+                <HighlightedRow
                   key={`row-${index}`}
                   onClick={() => handleItemClick(name)}
+                  isSelected={selectedItem === name}
                 >
                   <NameColumn>
                     <Typography variant="caption">{name}</Typography>
@@ -83,7 +100,7 @@ const RankedList = ({ playersData }) => {
                       {wins || "-"}
                     </MatchCount>
                   </ResultColumn>
-                </TableRow>
+                </HighlightedRow>
               );
             })}
           </TableBody>
