@@ -4,8 +4,7 @@ import { Stack } from "@mui/material";
 const TeamLogo = styled.img`
   width: 2em;
   height: 2em;
-  background: url(http://wizzfree.com/pix/bg.jpg) fixed;
-  filter: ${({ isLoser }) => (isLoser ? "grayscale(100%) opacity(50%)" : "")};
+  filter: ${({ loser }) => (loser ? "grayscale(100%) opacity(50%)" : "")};
 `;
 
 const ImgContainer = styled.div`
