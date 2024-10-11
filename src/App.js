@@ -38,11 +38,11 @@ function App() {
 
   const isLoser = useCallback(
     (shortDisplayName) => {
-      const loser = losers?.find(
-        (loser) => loser?.team?.shortDisplayName === shortDisplayName
-      );
-      return loser?.team?.shortDisplayName === shortDisplayName;
-    },
+    const loser = losers?.find(
+      (loser) => loser?.team?.shortDisplayName === shortDisplayName
+    );
+    return loser?.team?.shortDisplayName === shortDisplayName;
+  },
     [losers]
   );
 
@@ -63,7 +63,7 @@ function App() {
         const loser = game.competitors?.filter(
           (competitor) => !competitor?.winner
         );
-        return [...acc, loser];
+        return [...acc, ...loser];
       }
       return acc;
     }, []);
@@ -73,7 +73,7 @@ function App() {
       const winners = event?.competitions?.[0]?.competitors?.filter(
         (competitor) => competitor?.winner
       );
-      return [...acc, winners];
+      return [...acc, ...winners];
     }, []);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ function App() {
       })
       .sort((player1, player2) => player2.wins - player1.wins);
     setPlayersData(players);
-  }, [isLoser, isWinner, losers]);
+  }, [isLoser, isWinner, losers, winners]);
 
   return (
     <ContainerStyled maxWidth="lg">
