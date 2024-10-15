@@ -94,7 +94,7 @@ function App() {
       if (game.status.type.name !== "STATUS_FINAL") {
         const [home, away] = event?.competitions?.[0]?.competitors
         if(home.score !== away.score) {
-          const draftWinner = home.score > away.score ? home : away
+          const draftWinner = Number(home.score) > Number(away.score) ? home : away
           draftWinners.push(draftWinner)
         }
       }
