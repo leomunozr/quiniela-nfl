@@ -9,3 +9,6 @@ export const SCHEDULED = "STATUS_SCHEDULED";
 export const IN_PROGRESS = "STATUS_IN_PROGRESS";
 export const FINAL = "STATUS_FINAL";
 export const END_PERIOD = "STATUS_END_PERIOD"
+
+export const TUESDAY = 2
+export const WEDNESDAY = 3
