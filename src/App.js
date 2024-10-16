@@ -122,7 +122,7 @@ function App() {
         Semana {week}
       </Typography>
 
-      {!playersData.length || daysToNotShowPositions.includes(new Date().getDay()+1) ? (
+      {!playersData.length || daysToNotShowPositions.includes(new Date().getDay()) ? (
         <Paper elevation={3} sx={{ padding: "1rem" }}>
           <Typography variant="h6" gutterBottom>
             Posiciones
