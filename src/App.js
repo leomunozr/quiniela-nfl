@@ -28,6 +28,7 @@ function App() {
   const [week, setWeek] = useState("");
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
+  const [draftWinners, setDrafWinners] = useState([])
 
   const getLogo = (shortDisplayName) => {
     const found = teamsData?.filter(
@@ -56,6 +57,16 @@ function App() {
     [winners]
   );
 
+  const isDraftWinner = useCallback(
+    (shortDisplayName) => {
+      const winner = draftWinners?.find(
+        (winner) => winner?.team?.shortDisplayName === shortDisplayName
+      );
+      return winner?.team?.shortDisplayName === shortDisplayName;
+    },
+    [winners]
+  );
+
   const getLosers = (events) =>
     events?.reduce((acc, event) => {
       const game = event.competitions[0];
@@ -76,6 +87,21 @@ function App() {
       return [...acc, ...winners];
     }, []);
 
+  const getDraftWinners = (events) => {
+    const draftWinners = []
+    events?.forEach((event) => {
+      const game = event.competitions[0]
+      if (game.status.type.name !== "STATUS_FINAL") {
+        const [home, away] = event?.competitions?.[0]?.competitors
+        if(home.score !== away.score) {
+          const draftWinner = Number(home.score) > Number(away.score) ? home : away
+          draftWinners.push(draftWinner)
+        }
+      }
+    })
+    return draftWinners
+  }
+
   useEffect(() => {
     const fetchScoreboard = async () => {
       const response = await fetch(SCOREBOARD_API);
@@ -84,10 +110,12 @@ function App() {
       const events = data.events;
       const winners = getWinners(events);
       const losers = getLosers(events);
+      const draftWinners = getDraftWinners(events);
       setWinners(winners);
       setLosers(losers);
       setEvents(events);
       setWeek(week);
+      setDrafWinners(draftWinners)
     };
     fetchScoreboard();
   }, []);
@@ -105,6 +133,7 @@ function App() {
             isLoser: isLoser(team),
           })),
           wins: teams?.filter((team) => isWinner(team))?.length,
+          draftWinners: teams?.filter((team) => isDraftWinner(team))?.length
         };
       })
       .sort((player1, player2) => player2.wins - player1.wins);

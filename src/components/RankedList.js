@@ -62,8 +62,7 @@ const MatchCount = styled.div`
 
 const RankedList = ({ playersData }) => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const maxWins = Math.max(...playersData?.map((player) => player.wins));
-
+  const maxWins = Math.max(...playersData?.map((player) => player.wins + player.draftWinners));
   const handleItemClick = (name) => {
     selectedItem === name ? setSelectedItem("") : setSelectedItem(name);
   };
@@ -77,7 +76,7 @@ const RankedList = ({ playersData }) => {
         <Table size="small">
           <TableBody>
             {playersData?.map((player, index) => {
-              const { name, teams, wins } = player;
+              const { name, teams, wins, draftWinners } = player;
               return (
                 <HighlightedRow
                   key={`row-${index}`}
@@ -91,13 +90,13 @@ const RankedList = ({ playersData }) => {
                     <PlayerScore
                       name={name}
                       teams={teams}
-                      wins={wins}
-                      hasMostWins={wins === maxWins}
+                      wins={wins + draftWinners}
+                      hasMostWins={(wins + draftWinners) === maxWins}
                     />
                   </TableCell>
                   <ResultColumn>
-                    <MatchCount hasMostWins={wins === maxWins}>
-                      {wins || "-"}
+                    <MatchCount hasMostWins={(wins + draftWinners) === maxWins}>
+                      {(wins + draftWinners) || "-"}
                     </MatchCount>
                   </ResultColumn>
                 </HighlightedRow>
