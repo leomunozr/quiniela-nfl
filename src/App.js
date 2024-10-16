@@ -12,7 +12,7 @@ import {
 
 import RankedList from "./components/RankedList";
 import Scoreboard from "./components/Scoreboard";
-import { SCOREBOARD_API } from "./constants";
+import { SCOREBOARD_API, TUESDAY, WEDNESDAY } from "./constants";
 
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
@@ -21,6 +21,8 @@ const ContainerStyled = styled(Container)`
   padding-left: 0;
   padding-right: 0;
 `;
+
+const daysToNotShowPositions = [TUESDAY, WEDNESDAY];
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -149,7 +151,7 @@ function App() {
         Semana {week}
       </Typography>
 
-      {!playersData.length ? (
+      {!playersData.length || daysToNotShowPositions.includes(new Date().getDay()) ? (
         <Paper elevation={3} sx={{ padding: "1rem" }}>
           <Typography variant="h6" gutterBottom>
             Posiciones
