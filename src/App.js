@@ -138,7 +138,7 @@ function App() {
           draftWinners: teams?.filter((team) => isDraftWinner(team))?.length
         };
       })
-      .sort((player1, player2) => player2.wins - player1.wins);
+      .sort((player1, player2) => (player2.wins + player2.draftWinners) - (player1.wins + player1.draftWinners));
     setPlayersData(players);
   }, [isLoser, isWinner, losers, winners]);
 
