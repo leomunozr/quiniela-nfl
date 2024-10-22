@@ -12,7 +12,7 @@ import {
 
 import RankedList from "./components/RankedList";
 import Scoreboard from "./components/Scoreboard";
-import { SCOREBOARD_API, TUESDAY, WEDNESDAY } from "./constants";
+import { SCOREBOARD_API, WEDNESDAY } from "./constants";
 
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
@@ -22,7 +22,7 @@ const ContainerStyled = styled(Container)`
   padding-right: 0;
 `;
 
-const daysToNotShowPositions = [TUESDAY, WEDNESDAY];
+const daysToNotShowPositions = [WEDNESDAY];
 
 function App() {
   const [events, setEvents] = useState([]);
