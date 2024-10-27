@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "@mui/material/styles/styled";
-import { Paper, Typography, Grid2, Stack } from "@mui/material";
+import { Paper, Typography, Grid2, Stack, Box } from "@mui/material";
 import { END_PERIOD, FINAL, IN_PROGRESS, SCHEDULED } from "../constants";
 
 const ScoreboardContainer = styled(Paper)`
-  padding: 1rem;
-  margin: 1.2rem 1rem;
+  padding: 1rem 0.8rem;
+  margin: 1.2rem 0.5rem;
   background-color: ${({ final }) => (final ? "#bebebe" : "#f5f5f5")};
   box-shadow: ${({ playing }) => (playing ? "0 0 3px #8BD6A4" : "none")};
   display: flex;
@@ -13,10 +13,23 @@ const ScoreboardContainer = styled(Paper)`
   filter: ${({ final }) => (final ? "opacity(50%)" : "")};
 `;
 
-const Score = styled(Grid2)`
+const ScoreSection = styled(Grid2)`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ScoreAndClock = styled(Stack)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BallIcon = styled(Box)`
+  font-size: 10px;
+  padding: 0 5px;
+  margin-left: 0;
+  margin-right: 0;
 `;
 
 const GameDate = ({ date }) => {
@@ -57,6 +70,8 @@ const Scoreboard = ({ competitions, date, status }) => {
   const d = new Date(date);
   const gameStatus = status.type.name;
 
+  const hasTheBall = (teamId) => competitions[0]?.situation?.possession === teamId ? <BallIcon>🏈</BallIcon> : null;
+
   return (
     <ScoreboardContainer
       elevation={3}
@@ -77,10 +92,12 @@ const Scoreboard = ({ competitions, date, status }) => {
                 ({home.records?.[0].summary})
               </Typography>
             </Stack>
+            {hasTheBall(home.id)}
           </Stack>
         </Grid2>
-        <Score size={2}>
-          <Stack>
+
+        <ScoreSection size={2}>
+          <ScoreAndClock>
             <Typography fontWeight="bold" variant="body">
               {home.score} - {away.score}
             </Typography>
@@ -89,11 +106,12 @@ const Scoreboard = ({ competitions, date, status }) => {
             ) : (
               <GameClock detail={status.type.shortDetail} />
             )}
-          </Stack>
-        </Score>
+          </ScoreAndClock>
+        </ScoreSection>
 
         <Grid2 size={5} display="flex" justifyContent="flex-end">
           <Stack direction="row" spacing={1} alignItems="center">
+            {hasTheBall(away.id)}
             <Stack>
               <Typography variant="caption" textAlign="right">
                 {away.team.displayName}
