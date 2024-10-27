@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@mui/material/styles/styled";
-import { Paper, Typography, Grid2, Stack } from "@mui/material";
+import { Paper, Typography, Grid2, Stack, Box } from "@mui/material";
 import { END_PERIOD, FINAL, IN_PROGRESS, SCHEDULED } from "../constants";
 
 const ScoreboardContainer = styled(Paper)`
@@ -57,6 +57,8 @@ const Scoreboard = ({ competitions, date, status }) => {
   const d = new Date(date);
   const gameStatus = status.type.name;
 
+  const hasTheBall = (teamId) => competitions[0]?.situation?.possession === teamId ? <Box px={2}>🏈</Box> : null;
+
   return (
     <ScoreboardContainer
       elevation={3}
@@ -77,8 +79,10 @@ const Scoreboard = ({ competitions, date, status }) => {
                 ({home.records?.[0].summary})
               </Typography>
             </Stack>
+            {hasTheBall(home.id)}
           </Stack>
         </Grid2>
+
         <Score size={2}>
           <Stack>
             <Typography fontWeight="bold" variant="body">
@@ -94,6 +98,7 @@ const Scoreboard = ({ competitions, date, status }) => {
 
         <Grid2 size={5} display="flex" justifyContent="flex-end">
           <Stack direction="row" spacing={1} alignItems="center">
+            {hasTheBall(away.id)}
             <Stack>
               <Typography variant="caption" textAlign="right">
                 {away.team.displayName}
