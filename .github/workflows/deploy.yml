@@ -25,7 +25,7 @@ jobs:
       - name: Login
         run: npm login
       - name: Install dependencies
-        run: npm install
+        run: npm install --registry=https://registry.npmjs.org/
       - name: Build static files
         run: npm run build
 
@@ -47,18 +47,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Setup Pages
-  #       uses: actions/configure-pages@v5
-  #     - name: Upload artifact
-  #       uses: actions/upload-pages-artifact@v3
-  #       with:
-  #         path: 'build'
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4
