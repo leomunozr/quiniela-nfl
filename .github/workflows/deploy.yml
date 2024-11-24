@@ -24,8 +24,7 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: |
-          npm set registry https://registry.npmjs.org/:_authToken=${{ secrets.GITHUB_TOKEN }}
-          npm install
+          npm install --registry=https://registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
       - name: Build static files
         run: npm run build
 
