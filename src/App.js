@@ -16,6 +16,7 @@ import { SCOREBOARD_API, WEDNESDAY } from "./constants";
 
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
+import fireworks from "./fireworks";
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;
@@ -41,11 +42,11 @@ function App() {
 
   const isLoser = useCallback(
     (shortDisplayName) => {
-    const loser = losers?.find(
-      (loser) => loser?.team?.shortDisplayName === shortDisplayName
-    );
-    return loser?.team?.shortDisplayName === shortDisplayName;
-  },
+      const loser = losers?.find(
+        (loser) => loser?.team?.shortDisplayName === shortDisplayName
+      );
+      return loser?.team?.shortDisplayName === shortDisplayName;
+    },
     [losers]
   );
 
@@ -66,7 +67,7 @@ function App() {
       );
       return winner?.team?.shortDisplayName === shortDisplayName;
     },
-    [winners]
+    [draftWinners]
   );
 
   const getLosers = (events) =>
@@ -95,7 +96,7 @@ function App() {
       const game = event.competitions[0]
       if (game.status.type.name !== "STATUS_FINAL") {
         const [home, away] = event?.competitions?.[0]?.competitors
-        if(home.score !== away.score) {
+        if (home.score !== away.score) {
           const draftWinner = Number(home.score) > Number(away.score) ? home : away
           draftWinners.push(draftWinner)
         }
@@ -141,6 +142,14 @@ function App() {
       .sort((player1, player2) => (player2.wins + player2.draftWinners) - (player1.wins + player1.draftWinners));
     setPlayersData(players);
   }, [isLoser, isWinner, losers, winners]);
+
+  useEffect(() => {
+    const allStatus = events?.map((event) => event?.competitions[0]?.status?.type?.name);
+    const hasEnded = (status) => status === "STATUS_FINAL";
+    if (allStatus.length > 0 && allStatus?.every(hasEnded)) {
+      fireworks();
+    };
+  }, [events])
 
   return (
     <ContainerStyled maxWidth="lg">
