@@ -22,14 +22,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-      - name: Login
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm login
       - name: Install dependencies
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm install
+        run: |
+          npm set registry https://registry.npmjs.org/:_authToken=${{ secrets.GITHUB_TOKEN }}
+          npm install
       - name: Build static files
         run: npm run build
 
