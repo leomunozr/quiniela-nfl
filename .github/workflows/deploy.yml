@@ -23,6 +23,8 @@ jobs:
         with:
           node-version: '18'
       - name: Login
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm login
       - name: Install dependencies
         env:
