@@ -23,7 +23,7 @@ const ContainerStyled = styled(Container)`
   padding-right: 0;
 `;
 
-const daysToNotShowPositions = [WEDNESDAY];
+const daysToNotShowPositions = [];
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -124,9 +124,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log({ playersRawData });
     const players = playersRawData
       ?.map((player) => {
         const { nombre, timestamp, ...predictions } = player;
+        console.log({ nombre, timestamp, predictions });
         const teams = Object.values(predictions);
         return {
           name: nombre,
