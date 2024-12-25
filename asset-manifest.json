@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/quiniela-nfl/static/js/main.af1d0cd8.js",
+    "main.js": "/quiniela-nfl/static/js/main.d4628dbd.js",
     "index.html": "/quiniela-nfl/index.html",
-    "main.af1d0cd8.js.map": "/quiniela-nfl/static/js/main.af1d0cd8.js.map"
+    "main.d4628dbd.js.map": "/quiniela-nfl/static/js/main.d4628dbd.js.map"
   },
   "entrypoints": [
-    "static/js/main.af1d0cd8.js"
+    "static/js/main.d4628dbd.js"
   ]
 }
