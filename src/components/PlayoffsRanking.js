@@ -93,8 +93,8 @@ const PlayoffsRanking = ({ events }) => {
     const currentCompetitions = competitions.filter((competition) => competition.status.type.name !== "STATUS_SCHEDULED");
 
     currentCompetitions.map((competition) => {
-      const winner = getCompetitionWinner(competition);
       const [home, away] = competition.competitors;
+      const winner = getCompetitionWinner(competition);
       const homeScorePrediction = predictions[home.team.name.toLowerCase()];
       const awayScorePrediction = predictions[away.team.name.toLowerCase()];
       const esGanador = getPredictionWinner(winner, homeScorePrediction, awayScorePrediction);
@@ -121,14 +121,14 @@ const PlayoffsRanking = ({ events }) => {
 
   function getCompetitionWinner(competition) {
     const [home, away] = competition.competitors;
-    home.score = '10';
-    away.score = '20';
     const max = Math.max(parseInt(home.score), parseInt(away.score));
+    if (max === 0) return null;
     const winner = competition.competitors.find(competitor => parseInt(competitor.score) === max);
     return winner;
   }
 
   function getPredictionWinner(winner, homeScore, awayScore) {
+    if (!winner) return false;
     const predictionWinner = homeScore > awayScore ? 'home' : 'away';
     return winner.homeAway === predictionWinner;
   }
