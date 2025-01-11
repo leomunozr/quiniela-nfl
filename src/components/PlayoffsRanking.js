@@ -89,7 +89,7 @@ const PlayoffsRanking = ({ events }) => {
   };
 
   const calculatePoints = (predictions) => {
-    const points = 0;
+    let points = 0;
     const currentCompetitions = competitions.filter((competition) => competition.status.type.name !== "STATUS_SCHEDULED");
 
     currentCompetitions.map((competition) => {
