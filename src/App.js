@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 
+import PlayoffsRanking from "./components/PlayoffsRanking";
 import RankedList from "./components/RankedList";
 import Scoreboard from "./components/Scoreboard";
 import { SCOREBOARD_API, WEDNESDAY } from "./constants";
@@ -17,6 +18,8 @@ import { SCOREBOARD_API, WEDNESDAY } from "./constants";
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
 import fireworks from "./fireworks";
+
+const IS_PLAYOFFS = true
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;
@@ -158,9 +161,12 @@ function App() {
       <Typography variant="h5" textAlign="center">
         Quiniela NFL
       </Typography>
-      <Typography variant="h6" textAlign="center">
-        Semana {week}
-      </Typography>
+      {IS_PLAYOFFS ? <Typography variant="h6" textAlign="center">
+        Wild Card Round
+      </Typography> :
+        <Typography variant="h6" textAlign="center">
+          Semana {week}
+        </Typography>}
 
       {!playersData.length || daysToNotShowPositions.includes(new Date().getDay()) ? (
         <Paper elevation={3} sx={{ padding: "1rem" }}>
@@ -174,7 +180,9 @@ function App() {
           </Table>
         </Paper>
       ) : (
-        <RankedList playersData={playersData} losers={losers} />
+        IS_PLAYOFFS ?
+          <PlayoffsRanking events={events} /> :
+          <RankedList playersData={playersData} losers={losers} />
       )}
 
       <Typography variant="h5" textAlign="center" mt={10}>
