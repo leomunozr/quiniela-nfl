@@ -100,6 +100,7 @@ const PlayoffsRanking = ({ events }) => {
       const esGanador = getPredictionWinner(winner, homeScorePrediction, awayScorePrediction);
       const esMarcadorExacto = homeScorePrediction === parseInt(home.score) && awayScorePrediction === parseInt(away.score);
       const esMasCercanoSinPasarse = getMasCercanoSinPasarse(competition, nombre, homeScorePrediction, awayScorePrediction);
+      const esMasCercanoPasandose = getMasCercanoPasandose(competition, nombre);
 
       if (!esGanador) return;
 
@@ -111,11 +112,29 @@ const PlayoffsRanking = ({ events }) => {
       else if (esMasCercanoSinPasarse) {
         points += 1.5;
       }
-      // else if (esMasCercanoPasandose) {
-      //   points += 1;
-      // }
+      else if (esMasCercanoPasandose) {
+        points += 1;
+      }
     });
     return points;
+  }
+
+  function getMasCercanoPasandose(competition, nombre) {
+    const [home, away] = competition.competitors;
+    const homeScore = parseInt(home.score);
+    const awayScore = parseInt(away.score);
+
+    const getDiff = getAbsCompetitionDiff(homeScore, awayScore)
+
+    const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
+      const h = predictions[home.team.name.toLowerCase()];
+      const a = predictions[away.team.name.toLowerCase()];
+      return { nombre, diff: getDiff(h, a) };
+    });
+    const minDiff = Math.min(...diffs.map(d => d.diff));
+    const cercanos = diffs.filter(d => d.diff === minDiff)?.map(d => d.nombre);
+    console.log({ cercanos });
+    return cercanos.includes(nombre)
   }
 
   function getMasCercanoSinPasarse(competition, nombre, homeScorePrediction, awayScorePrediction) {
@@ -140,6 +159,12 @@ const PlayoffsRanking = ({ events }) => {
   const getCompetitionDiff = (homeScore, awayScore) => (homePrediction, awayPrediction) => {
     const homeDiff = homeScore - homePrediction;
     const awayDiff = awayScore - awayPrediction;
+    return homeDiff + awayDiff;
+  }
+
+  const getAbsCompetitionDiff = (homeScore, awayScore) => (homePrediction, awayPrediction) => {
+    const homeDiff = Math.abs(homeScore - homePrediction);
+    const awayDiff = Math.abs(awayScore - awayPrediction);
     return homeDiff + awayDiff;
   }
 
