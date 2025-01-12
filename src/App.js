@@ -127,11 +127,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log({ playersRawData });
     const players = playersRawData
       ?.map((player) => {
         const { nombre, timestamp, ...predictions } = player;
-        console.log({ nombre, timestamp, predictions });
         const teams = Object.values(predictions);
         return {
           name: nombre,
