@@ -10,9 +10,11 @@ import {
   Table,
   TableBody,
   TableCell,
+  Stack,
 } from "@mui/material";
 
 import playersData from "../data/playersData";
+import { points } from "../data/acc";
 
 const hoverColor = "#e0e0e0";
 const selectedColor = "#e3f2fd";
@@ -182,6 +184,8 @@ const PlayoffsRanking = ({ events }) => {
     return winner.homeAway === predictionWinner;
   }
 
+  const getAcc = (name) => points[name];
+
   return (
     <StyledPaper elevation={3}>
       <Typography variant="h6" gutterBottom>
@@ -205,6 +209,7 @@ const PlayoffsRanking = ({ events }) => {
                 </TableCell>
               ))}
               <ResultColumn></ResultColumn>
+              <ResultColumn></ResultColumn>
             </HighlightedRow>
           </TableHead>
           <TableBody>
@@ -217,9 +222,15 @@ const PlayoffsRanking = ({ events }) => {
                   <ScoreCell key={team}>{score}</ScoreCell>
                 ))}
                 <ResultColumn>
-                  <MatchCount hasMostWins={true}>
-                    {calculatePoints(predictions, nombre)}
-                  </MatchCount></ResultColumn>
+                  <Stack direction="row" spacing={1}>
+                    <MatchCount>
+                      {getAcc(nombre)}
+                    </MatchCount>
+                    <MatchCount hasMostWins={true}>
+                      {calculatePoints(predictions, nombre)}
+                    </MatchCount>
+                  </Stack>
+                </ResultColumn>
               </HighlightedRow>
             ))}
           </TableBody>

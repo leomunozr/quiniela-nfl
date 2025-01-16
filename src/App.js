@@ -18,6 +18,7 @@ import { SCOREBOARD_API, WEDNESDAY } from "./constants";
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
 import fireworks from "./fireworks";
+import Accumulated from "./components/Accumulated";
 
 const IS_PLAYOFFS = true
 
@@ -147,12 +148,35 @@ function App() {
   }, [isLoser, isWinner, losers, winners]);
 
   useEffect(() => {
+    if (IS_PLAYOFFS) return;
     const allStatus = events?.map((event) => event?.competitions[0]?.status?.type?.name);
     const hasEnded = (status) => status === "STATUS_FINAL";
     if (allStatus.length > 0 && allStatus?.every(hasEnded)) {
       fireworks();
     };
   }, [events])
+
+  const RegularSeason = () => {
+    return !playersData.length || daysToNotShowPositions.includes(new Date().getDay()) ? (
+      <Paper elevation={3} sx={{ padding: "1rem" }}>
+        <Typography variant="h6" gutterBottom>
+          Posiciones
+        </Typography>
+        <Table>
+          <TableRow>
+            <TableCell>Sin datos</TableCell>
+          </TableRow>
+        </Table>
+      </Paper>
+    ) : (
+      <RankedList playersData={playersData} losers={losers} />
+    );
+  }
+
+  function Playoffs() {
+    return playersData.length ?
+      <PlayoffsRanking events={events} /> : <Accumulated />
+  }
 
   return (
     <ContainerStyled maxWidth="lg">
@@ -165,24 +189,10 @@ function App() {
         <Typography variant="h6" textAlign="center">
           Semana {week}
         </Typography>}
-
-      {!playersData.length || daysToNotShowPositions.includes(new Date().getDay()) ? (
-        <Paper elevation={3} sx={{ padding: "1rem" }}>
-          <Typography variant="h6" gutterBottom>
-            Posiciones
-          </Typography>
-          <Table>
-            <TableRow>
-              <TableCell>Sin datos</TableCell>
-            </TableRow>
-          </Table>
-        </Paper>
-      ) : (
+      {
         IS_PLAYOFFS ?
-          <PlayoffsRanking events={events} /> :
-          <RankedList playersData={playersData} losers={losers} />
-      )}
-
+          <Playoffs /> : <RegularSeason />
+      }
       <Typography variant="h5" textAlign="center" mt={10}>
         Resultados
       </Typography>
