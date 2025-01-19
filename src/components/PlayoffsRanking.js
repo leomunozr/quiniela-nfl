@@ -100,14 +100,15 @@ const PlayoffsRanking = ({ events }) => {
       const homeScorePrediction = predictions[home.team.name.toLowerCase()];
       const awayScorePrediction = predictions[away.team.name.toLowerCase()];
       const esGanador = getPredictionWinner(winner, homeScorePrediction, awayScorePrediction);
-      const esMarcadorExacto = homeScorePrediction === parseInt(home.score) && awayScorePrediction === parseInt(away.score);
-      const esMasCercanoSinPasarse = getMasCercanoSinPasarse(competition, nombre, homeScorePrediction, awayScorePrediction);
-      const esMasCercanoPasandose = getMasCercanoPasandose(competition, nombre);
 
       if (!esGanador) return;
 
-      points += 1;
+      const esMarcadorExacto = homeScorePrediction === parseInt(home.score) && awayScorePrediction === parseInt(away.score);
+      const esMasCercanoSinPasarse = getMasCercanoSinPasarse(competition, winner, nombre, homeScorePrediction, awayScorePrediction);
+      const esMasCercanoPasandose = getMasCercanoPasandose(competition, winner, nombre);
 
+      points += 1;
+      console.log({ nombre, esMarcadorExacto, esMasCercanoSinPasarse, esMasCercanoPasandose });
       if (esMarcadorExacto) {
         points += 2;
       }
@@ -121,7 +122,7 @@ const PlayoffsRanking = ({ events }) => {
     return points;
   }
 
-  function getMasCercanoPasandose(competition, nombre) {
+  function getMasCercanoPasandose(competition, winner, nombre) {
     const [home, away] = competition.competitors;
     const homeScore = parseInt(home.score);
     const awayScore = parseInt(away.score);
@@ -131,15 +132,16 @@ const PlayoffsRanking = ({ events }) => {
     const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
       const h = predictions[home.team.name.toLowerCase()];
       const a = predictions[away.team.name.toLowerCase()];
+      const winnerPrediction = h > a ? home : away;
+      if (winnerPrediction.team.name !== winner.team.name) return null;
       return { nombre, diff: getDiff(h, a) };
     });
-    const minDiff = Math.min(...diffs.map(d => d.diff));
-    const cercanos = diffs.filter(d => d.diff === minDiff)?.map(d => d.nombre);
-    console.log({ cercanos });
+    const minDiff = Math.min(...diffs.filter(d => d).map(d => d.diff));
+    const cercanos = diffs.filter(d => d).filter(d => d.diff === minDiff)?.map(d => d.nombre);
     return cercanos.includes(nombre)
   }
 
-  function getMasCercanoSinPasarse(competition, nombre, homeScorePrediction, awayScorePrediction) {
+  function getMasCercanoSinPasarse(competition, winner, nombre, homeScorePrediction, awayScorePrediction) {
     const [home, away] = competition.competitors;
     const homeScore = parseInt(home.score);
     const awayScore = parseInt(away.score);
@@ -151,10 +153,12 @@ const PlayoffsRanking = ({ events }) => {
     const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
       const h = predictions[home.team.name.toLowerCase()];
       const a = predictions[away.team.name.toLowerCase()];
+      const winnerPrediction = h > a ? home : away;
+      if (winnerPrediction.team.name !== winner.team.name) return null;
       return { nombre, diff: getDiff(h, a) };
     });
-    const minDiff = Math.min(...diffs.map(d => d.diff));
-    const cercanos = diffs.filter(d => d.diff === minDiff)?.map(d => d.nombre);
+    const minDiff = Math.min(...diffs.filter(d => d).map(d => d.diff));
+    const cercanos = diffs.filter(d => d).filter(d => d.diff === minDiff)?.map(d => d.nombre);
     return cercanos.includes(nombre)
   }
 
@@ -172,10 +176,10 @@ const PlayoffsRanking = ({ events }) => {
 
   function getCompetitionWinner(competition) {
     const [home, away] = competition.competitors;
-    const max = Math.max(parseInt(home.score), parseInt(away.score));
-    if (max === 0) return null;
-    const winner = competition.competitors.find(competitor => parseInt(competitor.score) === max);
-    return winner;
+    const homeScore = parseInt(home.score);
+    const awayScore = parseInt(away.score);
+    if (homeScore === awayScore) return null;
+    return homeScore > awayScore ? home : away;
   }
 
   function getPredictionWinner(winner, homeScore, awayScore) {
@@ -192,7 +196,7 @@ const PlayoffsRanking = ({ events }) => {
         Posiciones
       </Typography>
 
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table>
           <TableHead>
             <HighlightedRow>
@@ -208,7 +212,6 @@ const PlayoffsRanking = ({ events }) => {
                   </ImgContainer>
                 </TableCell>
               ))}
-              <ResultColumn></ResultColumn>
               <ResultColumn></ResultColumn>
             </HighlightedRow>
           </TableHead>
