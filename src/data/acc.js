@@ -5,5 +5,5 @@ export const points = {
   ['Itzae']: 3,
   ['ƊIANA']: 6,
   ['David 🌙']: 4,
-  ['Fuchi caca']: 5,
+  ['Tu mamá en playoffs']: 5,
 };
