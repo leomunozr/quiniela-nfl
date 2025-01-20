@@ -183,7 +183,7 @@ const PlayoffsRanking = ({ events }) => {
   }
 
   function getPredictionWinner(winner, homeScore, awayScore) {
-    if (!winner) return false;
+    if (!winner || !homeScore || !awayScore) return false;
     const predictionWinner = homeScore > awayScore ? 'home' : 'away';
     return winner.homeAway === predictionWinner;
   }
@@ -216,26 +216,44 @@ const PlayoffsRanking = ({ events }) => {
             </HighlightedRow>
           </TableHead>
           <TableBody>
-            {playersData.map(({ nombre, timestamp, ...predictions }) => (
-              <HighlightedRow key={nombre}
-                onClick={() => handleItemClick(nombre)}
-                isSelected={selectedItem === nombre}>
-                <NameColumn>{nombre}</NameColumn>
-                {Object.entries(predictions).map(([team, score]) => (
-                  <ScoreCell key={team}>{score}</ScoreCell>
-                ))}
-                <ResultColumn>
-                  <Stack direction="row" spacing={1}>
-                    <MatchCount>
-                      {getAcc(nombre)}
-                    </MatchCount>
-                    <MatchCount hasMostWins={true}>
-                      {calculatePoints(predictions, nombre)}
-                    </MatchCount>
-                  </Stack>
-                </ResultColumn>
-              </HighlightedRow>
-            ))}
+            {Object.keys(points)
+              .map(n => {
+                const data = playersData.find(player => player.nombre === n)
+                if (data) {
+                  const { nombre, timestamp, ...predictions } = data;
+                  return { nombre, predictions }
+                } else {
+                  return ({
+                    nombre: n,
+                    predictions: {}
+                  })
+                }
+              })
+              .map(({ nombre, predictions }) => (
+                <HighlightedRow key={nombre}
+                  onClick={() => handleItemClick(nombre)}
+                  isSelected={selectedItem === nombre}>
+                  <NameColumn>{nombre}</NameColumn>
+                  {
+                    Object.entries(predictions).length > 0 ?
+                      Object.entries(predictions).map(([team, score]) => (
+                        <ScoreCell key={team}>{score}</ScoreCell>
+                      )) : [...Array(competitors.length)].map((_, index) => (
+                        <ScoreCell key={`empty-${index}`}>-</ScoreCell>
+                      ))
+                  }
+                  <ResultColumn>
+                    <Stack direction="row" spacing={1}>
+                      <MatchCount>
+                        {getAcc(nombre)}
+                      </MatchCount>
+                      <MatchCount hasMostWins={true}>
+                        {calculatePoints(predictions, nombre)}
+                      </MatchCount>
+                    </Stack>
+                  </ResultColumn>
+                </HighlightedRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
