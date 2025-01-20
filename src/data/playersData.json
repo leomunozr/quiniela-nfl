@@ -6,10 +6,10 @@
     "texans": 14,
     "lions": 35,
     "commanders": 21,
-    "eagles-": 17,
+    "eagles": 17,
     "rams": 10,
     "bills": 31,
-    "ravens-": 28
+    "ravens": 28
   },
   {
     "timestamp": "2025-01-18T16:00:11.276Z",
@@ -18,10 +18,10 @@
     "texans": 14,
     "lions": 30,
     "commanders": 20,
-    "eagles-": 20,
+    "eagles": 20,
     "rams": 17,
     "bills": 21,
-    "ravens-": 24
+    "ravens": 24
   },
   {
     "timestamp": "2025-01-18T18:34:48.702Z",
@@ -30,10 +30,10 @@
     "texans": 14,
     "lions": 21,
     "commanders": 17,
-    "eagles-": 27,
+    "eagles": 27,
     "rams": 14,
     "bills": 14,
-    "ravens-": 17
+    "ravens": 17
   },
   {
     "timestamp": "2025-01-18T19:24:50.361Z",
@@ -42,10 +42,10 @@
     "texans": 16,
     "lions": 28,
     "commanders": 17,
-    "eagles-": 21,
+    "eagles": 21,
     "rams": 24,
     "bills": 24,
-    "ravens-": 21
+    "ravens": 21
   },
   {
     "timestamp": "2025-01-18T20:03:55.401Z",
@@ -54,10 +54,10 @@
     "texans": 14,
     "lions": 21,
     "commanders": 24,
-    "eagles-": 21,
+    "eagles": 21,
     "rams": 25,
     "bills": 24,
-    "ravens-": 27
+    "ravens": 27
   },
   {
     "timestamp": "2025-01-18T21:02:57.677Z",
@@ -66,9 +66,9 @@
     "texans": 17,
     "lions": 28,
     "commanders": 16,
-    "eagles-": 28,
+    "eagles": 28,
     "rams": 20,
     "bills": 24,
-    "ravens-": 30
+    "ravens": 30
   }
 ]
