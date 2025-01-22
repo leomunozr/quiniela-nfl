@@ -1,9 +1,9 @@
 export const points = {
-  ['Leo 🦁']: 5,
-  ['Gabriel']: 7,
+  ['Gabriel']: 11,
+  ['ƊIANA']: 9.5,
+  ['Tu mamá en playoffs']: 8.5,
+  ['David 🌙']: 8,
+  ['Leo 🦁']: 8,
+  ['Itzae']: 5,
   ['Alexis']: 3,
-  ['Itzae']: 3,
-  ['ƊIANA']: 6,
-  ['David 🌙']: 5,
-  ['Tu mamá en playoffs']: 5,
 };
