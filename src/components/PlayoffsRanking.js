@@ -236,8 +236,8 @@ const PlayoffsRanking = ({ events }) => {
                   <NameColumn>{nombre}</NameColumn>
                   {
                     Object.entries(predictions).length > 0 ?
-                      Object.entries(predictions).map(([team, score]) => (
-                        <ScoreCell key={team}>{score}</ScoreCell>
+                      competitors.map(({ team }) => (
+                        <ScoreCell key={team.shortDisplayName.toLowerCase()}>{predictions[team.shortDisplayName.toLowerCase()]}</ScoreCell>
                       )) : [...Array(competitors.length)].map((_, index) => (
                         <ScoreCell key={`empty-${index}`}>-</ScoreCell>
                       ))

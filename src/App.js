@@ -184,7 +184,7 @@ function App() {
         Quiniela NFL
       </Typography>
       {IS_PLAYOFFS ? <Typography variant="h6" textAlign="center">
-        Ronda Divisional
+        Campeonatos de Conferencia
       </Typography> :
         <Typography variant="h6" textAlign="center">
           Semana {week}
