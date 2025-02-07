@@ -94,7 +94,7 @@ const PlayoffsRanking = ({ events }) => {
     let points = 0;
     const currentCompetitions = competitions.filter((competition) => competition.status.type.name !== "STATUS_SCHEDULED");
 
-    currentCompetitions.map((competition) => {
+    currentCompetitions.forEach((competition) => {
       const [home, away] = competition.competitors;
       const winner = getCompetitionWinner(competition);
       const homeScorePrediction = predictions[home.team.name.toLowerCase()];

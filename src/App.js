@@ -13,7 +13,7 @@ import {
 import PlayoffsRanking from "./components/PlayoffsRanking";
 import RankedList from "./components/RankedList";
 import Scoreboard from "./components/Scoreboard";
-import { SCOREBOARD_API, WEDNESDAY } from "./constants";
+import { SCOREBOARD_API } from "./constants";
 
 import playersRawData from "./data/playersData";
 import teamsData from "./data/teams";
