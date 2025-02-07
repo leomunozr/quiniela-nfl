@@ -8,7 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install dependencies
         run: npm install
+
+      - run: git config --global user.email leo@leomunoz.dev
+      - run: git config --global user.name leomunozr
+      
       - name: Deploy to GH Pages
         run: npm run deploy
