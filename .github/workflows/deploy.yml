@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sh update.sh
-      - run: |
-          git commit -m "Update" --allow-empty
-          git push origin main
+      # - run: |
+      #     git commit -m "Update" --allow-empty
+      #     git push origin main
 
   build:
     runs-on: ubuntu-latest
