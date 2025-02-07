@@ -1,0 +1,15 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a multiline script
+        run: |
+          echo 1. What is in this directory?
+          ls -a
+          echo 2. What environment variables are available?
+          printenv
