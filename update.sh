@@ -3,6 +3,8 @@ URL='https://script.google.com/macros/s/AKfycbxhJHN1L90NjFXecK6i_0AE1ij0zVxfmYC8
 response=$(curl -s -L -H "Accept: application/json" "$URL")
 
 echo $response > src/data/playersData.json
+echo Respuesta: $response
+echo playersData: $(cat src/data/playersData.json)
 
 # git add src/data/playersData.json
 # git commit -m "Update playersData.json"
