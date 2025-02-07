@@ -145,7 +145,7 @@ function App() {
       })
       .sort((player1, player2) => (player2.wins + player2.draftWinners) - (player1.wins + player1.draftWinners));
     setPlayersData(players);
-  }, [isLoser, isWinner, losers, winners]);
+  }, [isLoser, isWinner, losers, winners, isDraftWinner]);
 
   useEffect(() => {
     if (IS_PLAYOFFS) return;
