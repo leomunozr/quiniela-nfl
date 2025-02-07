@@ -18,6 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sh update.sh
+      - run: |
+          git config --global user.email leo@leomunoz.dev
+          git config --global user.name leomunozr
+          git commit -m "Update" --allow-empty
+          git push origin main
 
   build:
     runs-on: ubuntu-latest
