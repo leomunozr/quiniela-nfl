@@ -5,7 +5,7 @@ on:
   schedule: 
   # 09/feb/25 17:30 CST (23:30 UTC)
   # - cron: '30 23 09 02 *'
-    - cron: '55 20 * * *'
+    - cron: '0 21 * * *'
 
 permissions:
   contents: read
