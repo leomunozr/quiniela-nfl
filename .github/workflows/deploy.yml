@@ -2,6 +2,10 @@ name: deploy
 
 on:
   workflow_dispatch:
+  schedule: 
+  # 09/feb/25 17:30 CST (23:30 UTC)
+  # - cron: '30 23 09 02 *'
+  - cron: '52 20 * * *'
 
 permissions:
   contents: read
