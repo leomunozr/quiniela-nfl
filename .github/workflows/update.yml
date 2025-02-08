@@ -1,0 +1,65 @@
+name: Actualizar y publicar
+
+on:
+  workflow_dispatch:
+  schedule: 
+  # 09/feb/25 17:30 CST (23:30 UTC)
+  # - cron: '30 23 09 02 *'
+    - cron: '0 21 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# concurrency:
+#   group: "pages"
+#   cancel-in-progress: false
+  
+jobs:
+  # update:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: sh update.sh
+  #     - run: |
+  #         git config --global user.email leo@leomunoz.dev
+  #         git config --global user.name leomunozr
+  #         git commit -m "Update" --allow-empty
+  #         git push origin main
+
+  build:
+    runs-on: ubuntu-latest
+    # needs: update
+    steps:
+      - run: date
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - run: ls -a
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+
+      - run: sh update.sh
+      - run: cat src/data/playersData.json
+      
+      - name: Build static files
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './build'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
