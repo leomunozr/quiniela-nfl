@@ -43,8 +43,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - run: sh update.sh
-      - run: cat src/data/playersData.json
+      # - run: sh update.sh
+      # - run: cat src/data/playersData.json
       
       - name: Build static files
         run: npm run build
