@@ -27,8 +27,7 @@ const HighlightedRow = styled(TableRow)`
   & > * {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    background: ${({ isSelected }) =>
-    isSelected ? selectedColor : "white"};
+    background: ${({ isSelected }) => (isSelected ? selectedColor : "white")};
     transition: background-color 0.3s ease;
   }
   &:hover {
@@ -67,6 +66,7 @@ const MatchCount = styled.div`
   justify-content: center;
   margin-left: 5px;
   padding: 5px;
+  width: 30px;
 `;
 
 const TeamLogo = styled.img`
@@ -79,11 +79,14 @@ const ImgContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: scale(1.5);
 `;
 
 const PlayoffsRanking = ({ events }) => {
   const competitions = events.map((event) => event.competitions[0]);
-  const competitors = competitions.map((competition) => competition.competitors).flat();
+  const competitors = competitions
+    .map((competition) => competition.competitors)
+    .flat();
 
   const [selectedItem, setSelectedItem] = useState(null);
   const handleItemClick = (name) => {
@@ -92,42 +95,63 @@ const PlayoffsRanking = ({ events }) => {
 
   const calculatePoints = (predictions, nombre) => {
     let points = 0;
-    const currentCompetitions = competitions.filter((competition) => competition.status.type.name !== "STATUS_SCHEDULED");
+    const currentCompetitions = competitions.filter(
+      (competition) => competition.status.type.name !== "STATUS_SCHEDULED"
+    );
 
     currentCompetitions.forEach((competition) => {
       const [home, away] = competition.competitors;
       const winner = getCompetitionWinner(competition);
       const homeScorePrediction = predictions[home.team.name.toLowerCase()];
       const awayScorePrediction = predictions[away.team.name.toLowerCase()];
-      const esGanador = getPredictionWinner(winner, homeScorePrediction, awayScorePrediction);
+      const esGanador = getPredictionWinner(
+        winner,
+        homeScorePrediction,
+        awayScorePrediction
+      );
 
       if (!esGanador) return;
 
-      const esMarcadorExacto = homeScorePrediction === parseInt(home.score) && awayScorePrediction === parseInt(away.score);
-      const esMasCercanoSinPasarse = getMasCercanoSinPasarse(competition, winner, nombre, homeScorePrediction, awayScorePrediction);
-      const esMasCercanoPasandose = getMasCercanoPasandose(competition, winner, nombre);
+      const esMarcadorExacto =
+        homeScorePrediction === parseInt(home.score) &&
+        awayScorePrediction === parseInt(away.score);
+      const esMasCercanoSinPasarse = getMasCercanoSinPasarse(
+        competition,
+        winner,
+        nombre,
+        homeScorePrediction,
+        awayScorePrediction
+      );
+      const esMasCercanoPasandose = getMasCercanoPasandose(
+        competition,
+        winner,
+        nombre
+      );
 
       points += 1;
-      console.log({ nombre, esMarcadorExacto, esMasCercanoSinPasarse, esMasCercanoPasandose });
+      console.log({
+        nombre,
+        esMarcadorExacto,
+        esMasCercanoSinPasarse,
+        esMasCercanoPasandose,
+      });
       if (esMarcadorExacto) {
         points += 2;
-      }
-      else if (esMasCercanoSinPasarse) {
+      } else if (esMasCercanoSinPasarse) {
         points += 1.5;
-      }
-      else if (esMasCercanoPasandose) {
+      } else if (esMasCercanoPasandose) {
         points += 1;
       }
     });
     return points;
-  }
+  };
 
   function getMasCercanoPasandose(competition, winner, nombre) {
     const [home, away] = competition.competitors;
     const homeScore = parseInt(home.score);
     const awayScore = parseInt(away.score);
 
-    const getDiff = getAbsCompetitionDiff(homeScore, awayScore)
+    const getDiff = getAbsCompetitionDiff(homeScore, awayScore);
 
     const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
       const h = predictions[home.team.name.toLowerCase()];
@@ -136,19 +160,32 @@ const PlayoffsRanking = ({ events }) => {
       if (winnerPrediction.team.name !== winner.team.name) return null;
       return { nombre, diff: getDiff(h, a) };
     });
-    const minDiff = Math.min(...diffs.filter(d => d).map(d => d.diff));
-    const cercanos = diffs.filter(d => d).filter(d => d.diff === minDiff)?.map(d => d.nombre);
-    return cercanos.includes(nombre)
+    const minDiff = Math.min(...diffs.filter((d) => d).map((d) => d.diff));
+    const cercanos = diffs
+      .filter((d) => d)
+      .filter((d) => d.diff === minDiff)
+      ?.map((d) => d.nombre);
+    return cercanos.includes(nombre);
   }
 
-  function getMasCercanoSinPasarse(competition, winner, nombre, homeScorePrediction, awayScorePrediction) {
+  function getMasCercanoSinPasarse(
+    competition,
+    winner,
+    nombre,
+    homeScorePrediction,
+    awayScorePrediction
+  ) {
     const [home, away] = competition.competitors;
     const homeScore = parseInt(home.score);
     const awayScore = parseInt(away.score);
 
-    if (parseInt(home.score) < homeScorePrediction || parseInt(away.score) < awayScorePrediction) return false;
+    if (
+      parseInt(home.score) < homeScorePrediction ||
+      parseInt(away.score) < awayScorePrediction
+    )
+      return false;
 
-    const getDiff = getCompetitionDiff(homeScore, awayScore)
+    const getDiff = getCompetitionDiff(homeScore, awayScore);
 
     const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
       const h = predictions[home.team.name.toLowerCase()];
@@ -157,22 +194,27 @@ const PlayoffsRanking = ({ events }) => {
       if (winnerPrediction.team.name !== winner.team.name) return null;
       return { nombre, diff: getDiff(h, a) };
     });
-    const minDiff = Math.min(...diffs.filter(d => d).map(d => d.diff));
-    const cercanos = diffs.filter(d => d).filter(d => d.diff === minDiff)?.map(d => d.nombre);
-    return cercanos.includes(nombre)
+    const minDiff = Math.min(...diffs.filter((d) => d).map((d) => d.diff));
+    const cercanos = diffs
+      .filter((d) => d)
+      .filter((d) => d.diff === minDiff)
+      ?.map((d) => d.nombre);
+    return cercanos.includes(nombre);
   }
 
-  const getCompetitionDiff = (homeScore, awayScore) => (homePrediction, awayPrediction) => {
-    const homeDiff = homeScore - homePrediction;
-    const awayDiff = awayScore - awayPrediction;
-    return homeDiff + awayDiff;
-  }
+  const getCompetitionDiff =
+    (homeScore, awayScore) => (homePrediction, awayPrediction) => {
+      const homeDiff = homeScore - homePrediction;
+      const awayDiff = awayScore - awayPrediction;
+      return homeDiff + awayDiff;
+    };
 
-  const getAbsCompetitionDiff = (homeScore, awayScore) => (homePrediction, awayPrediction) => {
-    const homeDiff = Math.abs(homeScore - homePrediction);
-    const awayDiff = Math.abs(awayScore - awayPrediction);
-    return homeDiff + awayDiff;
-  }
+  const getAbsCompetitionDiff =
+    (homeScore, awayScore) => (homePrediction, awayPrediction) => {
+      const homeDiff = Math.abs(homeScore - homePrediction);
+      const awayDiff = Math.abs(awayScore - awayPrediction);
+      return homeDiff + awayDiff;
+    };
 
   function getCompetitionWinner(competition) {
     const [home, away] = competition.competitors;
@@ -184,7 +226,7 @@ const PlayoffsRanking = ({ events }) => {
 
   function getPredictionWinner(winner, homeScore, awayScore) {
     if (!winner || !homeScore || !awayScore) return false;
-    const predictionWinner = homeScore > awayScore ? 'home' : 'away';
+    const predictionWinner = homeScore > awayScore ? "home" : "away";
     return winner.homeAway === predictionWinner;
   }
 
@@ -202,7 +244,10 @@ const PlayoffsRanking = ({ events }) => {
             <HighlightedRow>
               <NameColumn></NameColumn>
               {competitors.map(({ team }, index) => (
-                <TableCell key={team.name}>
+                <TableCell
+                  key={team.name}
+                  sx={{ background: `#${team.color}`, opacity: 0.9 }}
+                >
                   <ImgContainer>
                     <TeamLogo
                       src={team.logo}
@@ -217,38 +262,42 @@ const PlayoffsRanking = ({ events }) => {
           </TableHead>
           <TableBody>
             {Object.keys(points)
-              .map(n => {
-                const data = playersData.find(player => player.nombre === n)
+              .map((n) => {
+                const data = playersData.find((player) => player.nombre === n);
                 if (data) {
                   const { nombre, timestamp, ...predictions } = data;
-                  return { nombre, predictions }
+                  return { nombre, predictions };
                 } else {
-                  return ({
+                  return {
                     nombre: n,
-                    predictions: {}
-                  })
+                    predictions: {},
+                  };
                 }
               })
               .map(({ nombre, predictions }) => (
-                <HighlightedRow key={nombre}
+                <HighlightedRow
+                  key={nombre}
                   onClick={() => handleItemClick(nombre)}
-                  isSelected={selectedItem === nombre}>
+                  isSelected={selectedItem === nombre}
+                >
                   <NameColumn>{nombre}</NameColumn>
-                  {
-                    Object.entries(predictions).length > 0 ?
-                      competitors.map(({ team }) => (
-                        <ScoreCell key={team.shortDisplayName.toLowerCase()}>{predictions[team.shortDisplayName.toLowerCase()]}</ScoreCell>
-                      )) : [...Array(competitors.length)].map((_, index) => (
-                        <ScoreCell key={`empty-${index}`}>-</ScoreCell>
-                      ))
-                  }
+                  {Object.entries(predictions).length > 0
+                    ? competitors.map(({ team }) => (
+                      <ScoreCell key={team.shortDisplayName.toLowerCase()}>
+                        {predictions[team.shortDisplayName.toLowerCase()]}
+                      </ScoreCell>
+                    ))
+                    : [...Array(competitors.length)].map((_, index) => (
+                      <ScoreCell key={`empty-${index}`}>-</ScoreCell>
+                    ))}
                   <ResultColumn>
                     <Stack direction="row" spacing={1}>
-                      <MatchCount>
-                        {getAcc(nombre)}
-                      </MatchCount>
-                      <MatchCount hasMostWins={true}>
+                      <MatchCount title="Puntos acumulado">{getAcc(nombre)}</MatchCount>
+                      <MatchCount title="Puntos obtenidos en el juego">
                         {calculatePoints(predictions, nombre)}
+                      </MatchCount>
+                      <MatchCount title="Suma total de puntos" hasMostWins={true}>
+                        {getAcc(nombre) + calculatePoints(predictions, nombre)}
                       </MatchCount>
                     </Stack>
                   </ResultColumn>
