@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "timestamp": "2025-02-07T06:52:00.559Z",
+    "nombre": "Leo 🦁",
+    "eagles": 27,
+    "chiefs": 31
+  },
+  {
+    "timestamp": "2025-02-07T17:24:50.997Z",
+    "nombre": "Gabriel",
+    "eagles": 35,
+    "chiefs": 38
+  }
+]
