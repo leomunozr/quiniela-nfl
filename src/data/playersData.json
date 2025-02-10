@@ -10,5 +10,23 @@
     "nombre": "Gabriel",
     "eagles": 35,
     "chiefs": 38
+  },
+  {
+    "timestamp": "2025-02-09T20:47:15.509Z",
+    "nombre": "David",
+    "eagles": 28,
+    "chiefs": 35
+  },
+  {
+    "timestamp": "2025-02-09T23:29:03.901Z",
+    "nombre": "David 🌙",
+    "eagles": 30,
+    "chiefs": 28
+  },
+  {
+    "timestamp": "2025-02-09T23:29:26.463Z",
+    "nombre": "DIANA",
+    "eagles": 29,
+    "chiefs": 40
   }
 ]
