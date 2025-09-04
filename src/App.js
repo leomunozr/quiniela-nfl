@@ -20,7 +20,7 @@ import teamsData from "./data/teams";
 import fireworks from "./fireworks";
 import Accumulated from "./components/Accumulated";
 
-const IS_PLAYOFFS = true
+const IS_PLAYOFFS = false;
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;
