@@ -7,6 +7,20 @@ const TeamLogo = styled.img`
   filter: ${({ loser }) => (loser ? "grayscale(100%) opacity(50%)" : "")};
 `;
 
+const Vacio = styled.p`
+  align-items: center;
+  display: flex;
+  font-size: 1.2em;
+  font-weight: 600;
+  height: 2em;
+  justify-content: center;
+  margin: 0;
+  width: 2em;
+  &:before {
+    content: "❌";
+  }
+`;
+
 const Empate = styled.p`
   align-items: center;
   display: flex;
@@ -39,6 +53,8 @@ const PlayerScore = ({ teams }) => {
       {teams?.map((team, index) => (
         <ImgContainer key={`logo-${index}`}>
           {
+            team.shortDisplayName === "" 
+            ? <Vacio /> :
             team.shortDisplayName === 'Empate'
               ? <Empate />
               : <TeamLogo
