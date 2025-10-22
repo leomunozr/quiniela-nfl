@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 [
   {
     "timestamp": "2025-10-15T03:55:06.504Z",
@@ -284,8 +283,24 @@
     "atlanta falcons at san francisco 49ers": "Falcons",
     "tampa bay buccaneers at detroit lions": "Buccaneers",
     "houston texans at seattle seahawks": "Seahawks"
+  },
+  {
+    "timestamp": "2025-10-17T19:14:04.037Z",
+    "nombre": "Gabino nic",
+    "pittsburgh steelers at cincinnati bengals": "Empate",
+    "los angeles rams at jacksonville jaguars": "Jaguars",
+    "new orleans saints at chicago bears": "Bears",
+    "miami dolphins at cleveland browns": "Browns",
+    "las vegas raiders at kansas city chiefs": "Chiefs",
+    "philadelphia eagles at minnesota vikings": "Vikings",
+    "carolina panthers at new york jets": "Panthers",
+    "new england patriots at tennessee titans": "Patriots",
+    "new york giants at denver broncos": "Broncos",
+    "indianapolis colts at los angeles chargers": "Colts",
+    "green bay packers at arizona cardinals": "Packers",
+    "washington commanders at dallas cowboys": "Commanders",
+    "atlanta falcons at san francisco 49ers": "Falcons",
+    "tampa bay buccaneers at detroit lions": "Lions",
+    "houston texans at seattle seahawks": "Seahawks"
   }
 ]
-=======
-[]
->>>>>>> Stashed changes
