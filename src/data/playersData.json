@@ -250,5 +250,41 @@
     "detroit lions at washington commanders": "Commanders",
     "pittsburgh steelers at los angeles chargers": "Chargers",
     "philadelphia eagles at green bay packers": "Eagles"
+  },
+  {
+    "timestamp": "2025-11-07T01:22:00.084Z",
+    "nombre": "Fer",
+    "las vegas raiders at denver broncos": "",
+    "atlanta falcons at indianapolis colts": "Falcons",
+    "new york giants at chicago bears": "Bears",
+    "buffalo bills at miami dolphins": "Bills",
+    "baltimore ravens at minnesota vikings": "Ravens",
+    "cleveland browns at new york jets": "Browns",
+    "new england patriots at tampa bay buccaneers": "Patriots",
+    "new orleans saints at carolina panthers": "Panthers",
+    "jacksonville jaguars at houston texans": "Jaguars",
+    "arizona cardinals at seattle seahawks": "Seahawks",
+    "los angeles rams at san francisco 49ers": "Rams",
+    "detroit lions at washington commanders": "Lions",
+    "pittsburgh steelers at los angeles chargers": "Chargers",
+    "philadelphia eagles at green bay packers": "Eagles"
+  },
+  {
+    "timestamp": "2025-11-07T03:29:45.579Z",
+    "nombre": 666,
+    "las vegas raiders at denver broncos": "",
+    "atlanta falcons at indianapolis colts": "Colts",
+    "new york giants at chicago bears": "Bears",
+    "buffalo bills at miami dolphins": "Bills",
+    "baltimore ravens at minnesota vikings": "Ravens",
+    "cleveland browns at new york jets": "Browns",
+    "new england patriots at tampa bay buccaneers": "Patriots",
+    "new orleans saints at carolina panthers": "Panthers",
+    "jacksonville jaguars at houston texans": "Jaguars",
+    "arizona cardinals at seattle seahawks": "Seahawks",
+    "los angeles rams at san francisco 49ers": "Rams",
+    "detroit lions at washington commanders": "Lions",
+    "pittsburgh steelers at los angeles chargers": "Steelers",
+    "philadelphia eagles at green bay packers": "Eagles"
   }
 ]
