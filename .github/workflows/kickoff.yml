@@ -1,0 +1,71 @@
+name: Kickoff Week
+
+on:
+  workflow_dispatch:
+    inputs:
+      week:
+        description: 'Week number'
+        required: true
+        default: '12'
+      spreadsheet_url:
+        description: 'Full URL of the Google Sheet'
+        required: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  kickoff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Update week in index.html
+        run: sed -i -r "s/(semana )[0-9]+/\1${{ github.event.inputs.week }}/" public/index.html
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch and write player data
+        env:
+          API_URL: "https://script.google.com/macros/s/AKfycbx48UDLm4BnVUmW9RWRSSG2e--fM2QT8zzQxV3jzvD14wXATif-c_1PCyEQGTjdbPPYtA/exec"
+          SPREADSHEET: ${{ github.event.inputs.spreadsheet_url }}
+        run: |
+          RESPONSES_URL="${API_URL}?script=respuestas&url=${SPREADSHEET}"
+          url=$RESPONSES_URL dir=. node scripts/fetch-data.js
+
+      - name: Commit and push changes
+        run: |
+          git add public/index.html src/data/playersData.json
+          git commit --allow-empty -m "Semana ${{ github.event.inputs.week }}"
+          git push origin main
+
+      - name: Build static files
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './build'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
