@@ -18,8 +18,11 @@ async function fetchPlayersData() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const playersData = await response.json();
+    const rest = playersData.map(({nombre, ...rest}) => rest)
+    const str = JSON.stringify(rest, null, 2)
+      .replaceAll("apodo", "nombre")
     console.log(`\nEscribiendo respuesta en ${file}...`);
-    fs.writeFileSync(file, JSON.stringify(playersData, null, 2));
+    fs.writeFileSync(file, str);
     console.log('\nRespuestas recibidas con exito.');
   } catch (e) {
     console.error(`\nHubo un error: ${e}`);
