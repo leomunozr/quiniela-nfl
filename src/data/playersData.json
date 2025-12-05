@@ -162,7 +162,7 @@
     "philadelphia eagles at los angeles chargers": "Eagles"
   },
   {
-    "timestamp": "2025-12-05T01:21:36.975Z",
+    "timestamp": "2025-12-05T01:11:37.000Z",
     "nombre": "Uyuyuy Uyuyuy Uyuyuy",
     "dallas cowboys at detroit lions": "Cowboys",
     "tennessee titans at cleveland browns": "Titans",
@@ -174,6 +174,24 @@
     "pittsburg steelers at baltimore ravens": "Ravens",
     "miami dolphins at new york jets": "Dolphins",
     "denver broncos at las vegas raiders": "Raiders",
+    "los angeles rams at arizona cardinals": "Rams",
+    "chicago bears at green bay packers": "Packers",
+    "houston texans at kansas chiefs": "Chiefs",
+    "philadelphia eagles at los angeles chargers": "Eagles"
+  },
+  {
+    "timestamp": "2025-12-05T01:59:49.210Z",
+    "nombre": "Mond",
+    "dallas cowboys at detroit lions": "Empate",
+    "tennessee titans at cleveland browns": "Browns",
+    "seattle seahawks at atlanta falcons": "Seahawks",
+    "indianapolis colts at jacksonville jaguars": "Colts",
+    "washington commanders at minnesota vikings": "Vikings",
+    "cincinnati bengals at buffalo bills": "Bills",
+    "new orleans saints at tampa bay buccaneers": "Buccaneers",
+    "pittsburg steelers at baltimore ravens": "Steelers",
+    "miami dolphins at new york jets": "Jets",
+    "denver broncos at las vegas raiders": "Broncos",
     "los angeles rams at arizona cardinals": "Rams",
     "chicago bears at green bay packers": "Packers",
     "houston texans at kansas chiefs": "Chiefs",
