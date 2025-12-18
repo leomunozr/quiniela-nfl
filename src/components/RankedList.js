@@ -61,7 +61,7 @@ const MatchCount = styled.div`
   padding: 5px;
 `;
 
-const MAX_NAME_LENGTH = 35;
+const MAX_NAME_LENGTH = 54;
 
 const truncateName = (name) => {
   if (name.length <= MAX_NAME_LENGTH) return name;
