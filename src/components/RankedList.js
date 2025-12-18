@@ -9,6 +9,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  Tooltip,
 } from "@mui/material";
 import PlayerScore from "./PlayerScore";
 
@@ -60,6 +61,30 @@ const MatchCount = styled.div`
   padding: 5px;
 `;
 
+const MAX_NAME_LENGTH = 35;
+
+const truncateName = (name) => {
+  if (name.length <= MAX_NAME_LENGTH) return name;
+  const words = name.split(" ");
+  let truncated = "";
+
+  for (let word of words) {
+    const nextLength =
+      truncated.length + (truncated.length > 0 ? 1 : 0) + word.length;
+    if (nextLength <= MAX_NAME_LENGTH) {
+      truncated += (truncated.length > 0 ? " " : "") + word;
+    } else {
+      break;
+    }
+  }
+
+  if (truncated.length === 0) {
+    return name.substring(0, MAX_NAME_LENGTH) + "...";
+  }
+
+  return truncated + "...";
+};
+
 const RankedList = ({ playersData }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const maxWins = Math.max(...playersData?.map((player) => player.wins + player.draftWinners));
@@ -77,6 +102,7 @@ const RankedList = ({ playersData }) => {
           <TableBody>
             {playersData?.map((player, index) => {
               const { name, teams, wins, draftWinners } = player;
+              const displayName = truncateName(name);
               return (
                 <HighlightedRow
                   key={`row-${index}`}
@@ -84,7 +110,9 @@ const RankedList = ({ playersData }) => {
                   isSelected={selectedItem === name}
                 >
                   <NameColumn>
-                    <Typography variant="caption">{name}</Typography>
+                    <Tooltip title={name} placement="top" enterTouchDelay={0}>
+                      <Typography variant="caption">{displayName}</Typography>
+                    </Tooltip>
                   </NameColumn>
                   <TableCell>
                     <PlayerScore
