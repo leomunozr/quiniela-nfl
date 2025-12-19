@@ -21,7 +21,6 @@ async function fetchPlayersData() {
     const rest = playersData.map(({nombre, ...rest}) => rest)
     const str = JSON.stringify(rest, null, 2)
       .replaceAll("apodo", "nombre")
-      .replaceAll("Patiots", "Patriots")
     console.log(`\nEscribiendo respuesta en ${file}...`);
     fs.writeFileSync(file, str);
     console.log('\nRespuestas recibidas con exito.');

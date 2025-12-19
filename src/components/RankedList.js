@@ -110,9 +110,13 @@ const RankedList = ({ playersData }) => {
                   isSelected={selectedItem === name}
                 >
                   <NameColumn>
-                    <Tooltip title={name} placement="top" enterTouchDelay={0}>
+                    {name.length > MAX_NAME_LENGTH ? (
+                      <Tooltip title={name} placement="top" enterTouchDelay={0}>
+                        <Typography variant="caption">{displayName}</Typography>
+                      </Tooltip>
+                    ) : (
                       <Typography variant="caption">{displayName}</Typography>
-                    </Tooltip>
+                    )}
                   </NameColumn>
                   <TableCell>
                     <PlayerScore
