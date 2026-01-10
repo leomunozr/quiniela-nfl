@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "timestamp": "2026-01-07T06:43:55.157Z",
+    "nombre": "Prueba",
+    "panthers": 1,
+    "rams": 1,
+    "bears": 1,
+    "packers": 1,
+    "jaguars": 1,
+    "bills": 1,
+    "eagles": 1,
+    "49ers": 1,
+    "patriots": 1,
+    "chargers": 1,
+    "steelers": 1,
+    "texans": 1
+  }
+]
