@@ -20,7 +20,7 @@ import teamsData from "./data/teams";
 import fireworks from "./fireworks";
 import Accumulated from "./components/Accumulated";
 
-const IS_PLAYOFFS = false;
+const IS_PLAYOFFS = true;
 
 const ContainerStyled = styled(Container)`
   padding-left: 0;
@@ -184,7 +184,7 @@ function App() {
         Quiniela NFL
       </Typography>
       {IS_PLAYOFFS ? <Typography variant="h6" textAlign="center">
-        Super Bowl LIX
+        Wild Cards
       </Typography> :
         <Typography variant="h6" textAlign="center">
           Semana {week}

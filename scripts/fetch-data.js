@@ -18,7 +18,8 @@ async function fetchPlayersData() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const playersData = await response.json();
-    const rest = playersData.map(({nombre, ...rest}) => rest)
+    const rest = playersData.map(({ nombre, ...rest }) => rest)
+    rest.forEach(obj => delete obj["cuenta clabe"])
     const str = JSON.stringify(rest, null, 2)
       .replaceAll("apodo", "nombre")
     console.log(`\nEscribiendo respuesta en ${file}...`);
