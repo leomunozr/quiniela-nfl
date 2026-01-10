@@ -126,5 +126,21 @@
     "chargers": 16,
     "steelers": 25,
     "texans": 17
+  },
+  {
+    "timestamp": "2026-01-10T22:07:14.026Z",
+    "nombre": "Dejan una",
+    "panthers": 35,
+    "rams": 28,
+    "bears": 24,
+    "packers": 28,
+    "jaguars": 28,
+    "bills": 31,
+    "eagles": 28,
+    "49ers": 24,
+    "patriots": 35,
+    "chargers": 28,
+    "steelers": 28,
+    "texans": 25
   }
 ]
