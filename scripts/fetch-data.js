@@ -27,7 +27,7 @@ async function fetchPlayersData() {
     console.log('\nRespuestas recibidas con exito.');
 
     const nombres = rest.map(({ apodo }) => apodo)
-    const points = nombres.map((nombre) => ({ [nombre]: 0 }))
+    const points = nombres.reduce((acc, nombre) => ({ ...acc, [nombre]: 0 }), {})
     console.log({ points });
     fs.writeFileSync(`${dir}/src/data/acc.js`, `export const points = ${JSON.stringify(points, null, 2)}`);
   } catch (e) {
