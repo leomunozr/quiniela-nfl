@@ -6,5 +6,6 @@ export const points = {
   "Mond🌙": 0,
   "🦁": 0,
   "DR FOxter": 0,
-  "Chi que chi! Indiana Hoosiers": 0
+  "Chi que chi! Indiana Hoosiers": 0,
+  "Dejan una": 0
 }
