@@ -84,153 +84,73 @@ const ImgContainer = styled.div`
 
 const PlayoffsRanking = ({ events }) => {
   const competitions = events.map((event) => event.competitions[0]);
-  const competitors = competitions
-    .map((competition) => competition.competitors)
-    .flat();
+  const competitors = competitions.flatMap((comp) => comp.competitors);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleItemClick = (name) => {
-    selectedItem === name ? setSelectedItem("") : setSelectedItem(name);
-  };
 
-  const calculatePoints = (predictions, nombre) => {
-    let points = 0;
-    const currentCompetitions = competitions.filter(
-      (competition) => competition.status.type.name !== "STATUS_SCHEDULED"
+  // --- LÓGICA DE CÁLCULO CORREGIDA ---
+  const calculateAllPoints = () => {
+    // Inicializamos un objeto para rastrear puntos de esta ronda
+    const roundScores = {};
+    playersData.forEach(p => roundScores[p.nombre] = 0);
+
+    const completedGames = competitions.filter(
+      (comp) => comp.status.type.completed === true
     );
 
-    currentCompetitions.forEach((competition) => {
-      const [home, away] = competition.competitors;
-      const winner = getCompetitionWinner(competition);
-      const homeScorePrediction = predictions[home.team.name.toLowerCase()];
-      const awayScorePrediction = predictions[away.team.name.toLowerCase()];
-      const esGanador = getPredictionWinner(
-        winner,
-        homeScorePrediction,
-        awayScorePrediction
-      );
+    completedGames.forEach((comp) => {
+      const [home, away] = comp.competitors;
+      const hReal = parseInt(home.score);
+      const aReal = parseInt(away.score);
+      const winnerName = home.winner ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
 
-      if (!esGanador) return;
+      // 1. Identificar quiénes acertaron al ganador
+      let correctWinners = playersData.map(player => {
+        const hPred = player[home.team.name.toLowerCase()];
+        const aPred = player[away.team.name.toLowerCase()];
+        const predWinner = hPred > aPred ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
 
-      const esMarcadorExacto =
-        homeScorePrediction === parseInt(home.score) &&
-        awayScorePrediction === parseInt(away.score);
-      const esMasCercanoSinPasarse = getMasCercanoSinPasarse(
-        competition,
-        winner,
-        nombre,
-        homeScorePrediction,
-        awayScorePrediction
-      );
-      const esMasCercanoPasandose = getMasCercanoPasandose(
-        competition,
-        winner,
-        nombre
-      );
+        if (predWinner === winnerName) {
+          roundScores[player.nombre] += 1; // Punto base
+          return {
+            nombre: player.nombre,
+            hPred, aPred,
+            isExact: hPred === hReal && aPred === aReal,
+            noSePaso: hPred <= hReal && aPred <= aReal,
+            diffTotal: Math.abs((hPred + aPred) - (hReal + aReal))
+          };
+        }
+        return null;
+      }).filter(Boolean);
 
-      points += 1;
-      console.log({
-        nombre,
-        esMarcadorExacto,
-        esMasCercanoSinPasarse,
-        esMasCercanoPasandose,
-      });
-      if (esMarcadorExacto) {
-        points += 2;
-      } else if (esMasCercanoSinPasarse) {
-        points += 1.5;
-      } else if (esMasCercanoPasandose) {
-        points += 1;
+      if (correctWinners.length === 0) return;
+
+      // 2. Regla marcador exacto (+2 PE)
+      const exactos = correctWinners.filter(c => c.isExact);
+      if (exactos.length > 0) {
+        exactos.forEach(c => roundScores[c.nombre] += 2);
+        return; // Si hay exactos, se saltan las demás reglas de PE
+      }
+
+      // 3. Regla cercanía sin pasarse (+1.5 PE)
+      const sinPasarse = correctWinners.filter(c => c.noSePaso);
+      if (sinPasarse.length > 0) {
+        const minDiff = Math.min(...sinPasarse.map(c => c.diffTotal));
+        sinPasarse.filter(c => c.diffTotal === minDiff)
+          .forEach(c => roundScores[c.nombre] += 1.5);
+      }
+      // 4. Regla menor diferencia si todos se pasaron (+1 PE)
+      else {
+        const minDiff = Math.min(...correctWinners.map(c => c.diffTotal));
+        correctWinners.filter(c => c.diffTotal === minDiff)
+          .forEach(c => roundScores[c.nombre] += 1);
       }
     });
-    return points;
+
+    return roundScores;
   };
 
-  function getMasCercanoPasandose(competition, winner, nombre) {
-    const [home, away] = competition.competitors;
-    const homeScore = parseInt(home.score);
-    const awayScore = parseInt(away.score);
-
-    const getDiff = getAbsCompetitionDiff(homeScore, awayScore);
-
-    const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
-      const h = predictions[home.team.name.toLowerCase()];
-      const a = predictions[away.team.name.toLowerCase()];
-      const winnerPrediction = h > a ? home : away;
-      if (winnerPrediction.team.name !== winner.team.name) return null;
-      return { nombre, diff: getDiff(h, a) };
-    });
-    const minDiff = Math.min(...diffs.filter((d) => d).map((d) => d.diff));
-    const cercanos = diffs
-      .filter((d) => d)
-      .filter((d) => d.diff === minDiff)
-      ?.map((d) => d.nombre);
-    return cercanos.includes(nombre);
-  }
-
-  function getMasCercanoSinPasarse(
-    competition,
-    winner,
-    nombre,
-    homeScorePrediction,
-    awayScorePrediction
-  ) {
-    const [home, away] = competition.competitors;
-    const homeScore = parseInt(home.score);
-    const awayScore = parseInt(away.score);
-
-    if (
-      parseInt(home.score) < homeScorePrediction ||
-      parseInt(away.score) < awayScorePrediction
-    )
-      return false;
-
-    const getDiff = getCompetitionDiff(homeScore, awayScore);
-
-    const diffs = playersData.map(({ nombre, timestamp, ...predictions }) => {
-      const h = predictions[home.team.name.toLowerCase()];
-      const a = predictions[away.team.name.toLowerCase()];
-      const winnerPrediction = h > a ? home : away;
-      if (winnerPrediction.team.name !== winner.team.name) return null;
-      return { nombre, diff: getDiff(h, a) };
-    });
-    const minDiff = Math.min(...diffs.filter((d) => d).map((d) => d.diff));
-    const cercanos = diffs
-      .filter((d) => d)
-      .filter((d) => d.diff === minDiff)
-      ?.map((d) => d.nombre);
-    return cercanos.includes(nombre);
-  }
-
-  const getCompetitionDiff =
-    (homeScore, awayScore) => (homePrediction, awayPrediction) => {
-      const homeDiff = homeScore - homePrediction;
-      const awayDiff = awayScore - awayPrediction;
-      return homeDiff + awayDiff;
-    };
-
-  const getAbsCompetitionDiff =
-    (homeScore, awayScore) => (homePrediction, awayPrediction) => {
-      const homeDiff = Math.abs(homeScore - homePrediction);
-      const awayDiff = Math.abs(awayScore - awayPrediction);
-      return homeDiff + awayDiff;
-    };
-
-  function getCompetitionWinner(competition) {
-    const [home, away] = competition.competitors;
-    const homeScore = parseInt(home.score);
-    const awayScore = parseInt(away.score);
-    if (homeScore === awayScore) return null;
-    return homeScore > awayScore ? home : away;
-  }
-
-  function getPredictionWinner(winner, homeScore, awayScore) {
-    if (!winner || !homeScore || !awayScore) return false;
-    const predictionWinner = homeScore > awayScore ? "home" : "away";
-    return winner.homeAway === predictionWinner;
-  }
-
-  const getAcc = (name) => points[name];
+  const currentRoundScores = calculateAllPoints();
 
   return (
     <StyledPaper elevation={3}>
@@ -275,12 +195,12 @@ const PlayoffsRanking = ({ events }) => {
                 }
               })
               .map(({ nombre, predictions }) => (
-                <HighlightedRow
-                  key={nombre}
-                  onClick={() => handleItemClick(nombre)}
-                  isSelected={selectedItem === nombre}
-                >
-                  <NameColumn>{nombre}</NameColumn>
+              <HighlightedRow
+                key={nombre}
+                onClick={() => setSelectedItem(nombre)}
+                isSelected={selectedItem === nombre}
+              >
+                <NameColumn>{nombre}</NameColumn>
                   {Object.entries(predictions).length > 0
                     ? competitors.map(({ team }) => (
                       <ScoreCell key={team.shortDisplayName.toLowerCase()}>
@@ -290,19 +210,17 @@ const PlayoffsRanking = ({ events }) => {
                     : [...Array(competitors.length)].map((_, index) => (
                       <ScoreCell key={`empty-${index}`}>-</ScoreCell>
                     ))}
-                  <ResultColumn>
-                    <Stack direction="row" spacing={1}>
-                      <MatchCount title="Puntos acumulado">{getAcc(nombre)}</MatchCount>
-                      <MatchCount title="Puntos obtenidos en el juego">
-                        {calculatePoints(predictions, nombre)}
-                      </MatchCount>
-                      <MatchCount title="Suma total de puntos" hasMostWins={true}>
-                        {getAcc(nombre) + calculatePoints(predictions, nombre)}
-                      </MatchCount>
-                    </Stack>
-                  </ResultColumn>
-                </HighlightedRow>
-              ))}
+                <ResultColumn>
+                  <Stack direction="row" spacing={1}>
+                    <MatchCount title="Acumulado">{points[nombre]}</MatchCount>
+                    <MatchCount title="Ronda">{currentRoundScores[nombre] || 0}</MatchCount>
+                    <MatchCount title="Total" hasMostWins={true}>
+                      {points[nombre] + (currentRoundScores[nombre] || 0)}
+                    </MatchCount>
+                  </Stack>
+                </ResultColumn>
+              </HighlightedRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
