@@ -84,40 +84,37 @@ const ImgContainer = styled.div`
 
 const PlayoffsRanking = ({ events }) => {
   const competitions = events.map((event) => event.competitions[0]);
-  const competitors = competitions.flatMap((comp) => comp.competitors);
+  const competitors = competitions.flatMap((competition) => competition.competitors);
 
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // --- LÓGICA DE CÁLCULO CORREGIDA ---
-  const calculateAllPoints = () => {
-    // Inicializamos un objeto para rastrear puntos de esta ronda
-    const roundScores = {};
-    playersData.forEach(p => roundScores[p.nombre] = 0);
+  const calculatePoints = () => {
+    const puntosRonda = {};
+    playersData.forEach(p => puntosRonda[p.nombre] = 0);
 
-    const completedGames = competitions.filter(
-      (comp) => comp.status.type.completed === true
+    const currentCompetitions = competitions.filter(
+      (competition) => competition.status.type.name !== "STATUS_SCHEDULED"
     );
 
-    completedGames.forEach((comp) => {
-      const [home, away] = comp.competitors;
-      const hReal = parseInt(home.score);
-      const aReal = parseInt(away.score);
+    currentCompetitions.forEach((competition) => {
+      const [home, away] = competition.competitors;
+      const homeScore = parseInt(home.score);
+      const awayScore = parseInt(away.score);
       const winnerName = home.winner ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
 
-      // 1. Identificar quiénes acertaron al ganador
       let correctWinners = playersData.map(player => {
-        const hPred = player[home.team.name.toLowerCase()];
-        const aPred = player[away.team.name.toLowerCase()];
-        const predWinner = hPred > aPred ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
+        const homePrediction = player[home.team.name.toLowerCase()];
+        const awayPrediction = player[away.team.name.toLowerCase()];
+        const predWinner = homePrediction > awayPrediction ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
 
         if (predWinner === winnerName) {
-          roundScores[player.nombre] += 1; // Punto base
+          puntosRonda[player.nombre] += 1; // Punto base
           return {
             nombre: player.nombre,
-            hPred, aPred,
-            isExact: hPred === hReal && aPred === aReal,
-            noSePaso: hPred <= hReal && aPred <= aReal,
-            diffTotal: Math.abs((hPred + aPred) - (hReal + aReal))
+            homePrediction, awayPrediction,
+            esExacto: homePrediction === homeScore && awayPrediction === awayScore,
+            noSePaso: homePrediction <= homeScore && awayPrediction <= awayScore,
+            diffTotal: Math.abs((homePrediction + awayPrediction) - (homeScore + awayScore))
           };
         }
         return null;
@@ -126,9 +123,9 @@ const PlayoffsRanking = ({ events }) => {
       if (correctWinners.length === 0) return;
 
       // 2. Regla marcador exacto (+2 PE)
-      const exactos = correctWinners.filter(c => c.isExact);
+      const exactos = correctWinners.filter(c => c.esExacto);
       if (exactos.length > 0) {
-        exactos.forEach(c => roundScores[c.nombre] += 2);
+        exactos.forEach(c => puntosRonda[c.nombre] += 2);
         return; // Si hay exactos, se saltan las demás reglas de PE
       }
 
@@ -137,20 +134,20 @@ const PlayoffsRanking = ({ events }) => {
       if (sinPasarse.length > 0) {
         const minDiff = Math.min(...sinPasarse.map(c => c.diffTotal));
         sinPasarse.filter(c => c.diffTotal === minDiff)
-          .forEach(c => roundScores[c.nombre] += 1.5);
+          .forEach(c => puntosRonda[c.nombre] += 1.5);
       }
       // 4. Regla menor diferencia si todos se pasaron (+1 PE)
       else {
         const minDiff = Math.min(...correctWinners.map(c => c.diffTotal));
         correctWinners.filter(c => c.diffTotal === minDiff)
-          .forEach(c => roundScores[c.nombre] += 1);
+          .forEach(c => puntosRonda[c.nombre] += 1);
       }
     });
 
-    return roundScores;
+    return puntosRonda;
   };
 
-  const currentRoundScores = calculateAllPoints();
+  const currentpuntosRonda = calculatePoints();
 
   return (
     <StyledPaper elevation={3}>
@@ -212,10 +209,10 @@ const PlayoffsRanking = ({ events }) => {
                     ))}
                 <ResultColumn>
                   <Stack direction="row" spacing={1}>
-                    <MatchCount title="Acumulado">{points[nombre]}</MatchCount>
-                    <MatchCount title="Ronda">{currentRoundScores[nombre] || 0}</MatchCount>
-                    <MatchCount title="Total" hasMostWins={true}>
-                      {points[nombre] + (currentRoundScores[nombre] || 0)}
+                    <MatchCount title="Puntos acumulados">{points[nombre]}</MatchCount>
+                    <MatchCount title="Puntos ronda actual">{currentpuntosRonda[nombre] || 0}</MatchCount>
+                    <MatchCount title="Suma total de puntos" hasMostWins={true}>
+                      {points[nombre] + (currentpuntosRonda[nombre] || 0)}
                     </MatchCount>
                   </Stack>
                 </ResultColumn>
