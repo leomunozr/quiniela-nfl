@@ -163,7 +163,14 @@ const PlayoffsRanking = ({ events }) => {
               {competitors.map(({ team }, index) => (
                 <TableCell
                   key={team.name}
-                  sx={{ background: `#${team.color}`, opacity: 0.9 }}
+                  sx={{
+                    background: `#${team.color}`,
+                    opacity: 0.9,
+                    borderRight:
+                      index % 2 === 1 && index !== competitors.length - 1
+                        ? "2px solid black"
+                        : undefined,
+                  }}
                 >
                   <ImgContainer>
                     <TeamLogo
@@ -192,32 +199,37 @@ const PlayoffsRanking = ({ events }) => {
                 }
               })
               .map(({ nombre, predictions }) => (
-              <HighlightedRow
-                key={nombre}
-                onClick={() => setSelectedItem(nombre)}
-                isSelected={selectedItem === nombre}
-              >
-                <NameColumn>{nombre}</NameColumn>
-                  {Object.entries(predictions).length > 0
-                    ? competitors.map(({ team }) => (
-                      <ScoreCell key={team.shortDisplayName.toLowerCase()}>
-                        {predictions[team.shortDisplayName.toLowerCase()]}
-                      </ScoreCell>
-                    ))
-                    : [...Array(competitors.length)].map((_, index) => (
-                      <ScoreCell key={`empty-${index}`}>-</ScoreCell>
-                    ))}
-                <ResultColumn>
-                  <Stack direction="row" spacing={1}>
-                    <MatchCount title="Puntos acumulados">{points[nombre]}</MatchCount>
-                    <MatchCount title="Puntos ronda actual">{currentpuntosRonda[nombre] || 0}</MatchCount>
-                    <MatchCount title="Suma total de puntos" hasMostWins={true}>
-                      {points[nombre] + (currentpuntosRonda[nombre] || 0)}
-                    </MatchCount>
-                  </Stack>
-                </ResultColumn>
-              </HighlightedRow>
-            ))}
+                <HighlightedRow
+                  key={nombre}
+                  onClick={() => setSelectedItem(nombre)}
+                  isSelected={selectedItem === nombre}
+                >
+                  <NameColumn>{nombre}</NameColumn>
+                  {competitors.map(({ team }, index) => (
+                    <ScoreCell
+                      key={team.shortDisplayName.toLowerCase()}
+                      sx={
+                        index % 2 === 1 && index !== competitors.length - 1
+                          ? { borderRight: "2px solid black" }
+                          : {}
+                      }
+                    >
+                      {Object.keys(predictions).length > 0
+                        ? predictions[team.shortDisplayName.toLowerCase()]
+                        : "-"}
+                    </ScoreCell>
+                  ))}
+                  <ResultColumn>
+                    <Stack direction="row" spacing={1}>
+                      <MatchCount title="Puntos acumulados">{points[nombre]}</MatchCount>
+                      <MatchCount title="Puntos ronda actual">{currentpuntosRonda[nombre] || 0}</MatchCount>
+                      <MatchCount title="Suma total de puntos" hasMostWins={true}>
+                        {points[nombre] + (currentpuntosRonda[nombre] || 0)}
+                      </MatchCount>
+                    </Stack>
+                  </ResultColumn>
+                </HighlightedRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
