@@ -100,12 +100,28 @@ const PlayoffsRanking = ({ events }) => {
       const [home, away] = competition.competitors;
       const homeScore = parseInt(home.score);
       const awayScore = parseInt(away.score);
-      const winnerName = home.winner ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
+      let winnerName = null;
+      if (home.winner) {
+        winnerName = home.team.name.toLowerCase();
+      } else if (away.winner) {
+        winnerName = away.team.name.toLowerCase();
+      } else if (homeScore > awayScore) {
+        winnerName = home.team.name.toLowerCase();
+      } else if (awayScore > homeScore) {
+        winnerName = away.team.name.toLowerCase();
+      }
+
+      if (!winnerName) return;
 
       let correctWinners = playersData.map(player => {
         const homePrediction = player[home.team.name.toLowerCase()];
         const awayPrediction = player[away.team.name.toLowerCase()];
-        const predWinner = homePrediction > awayPrediction ? home.team.name.toLowerCase() : away.team.name.toLowerCase();
+        const predWinner =
+          homePrediction > awayPrediction
+            ? home.team.name.toLowerCase()
+            : awayPrediction > homePrediction
+            ? away.team.name.toLowerCase()
+            : null;
 
         if (predWinner === winnerName) {
           puntosRonda[player.nombre] += 1; // Punto base
