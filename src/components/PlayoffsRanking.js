@@ -168,7 +168,7 @@ const PlayoffsRanking = ({ events }) => {
                     opacity: 0.9,
                     borderRight:
                       index % 2 === 1 && index !== competitors.length - 1
-                        ? "2px solid black"
+                        ? "1px solid #e0e0e0"
                         : undefined,
                   }}
                 >
@@ -210,7 +210,7 @@ const PlayoffsRanking = ({ events }) => {
                       key={team.shortDisplayName.toLowerCase()}
                       sx={
                         index % 2 === 1 && index !== competitors.length - 1
-                          ? { borderRight: "2px solid black" }
+                          ? { borderRight: "1px solid #e0e0e0" }
                           : {}
                       }
                     >
