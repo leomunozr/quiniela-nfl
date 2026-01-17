@@ -1,9 +1,9 @@
 export const points = {
-  "Que el milagro continúe 🏈💛🖤": 5.5,
+  "Ya no hay buenos días, solo días 🏈💛🖤": 5.5,
   "Muffin": 4,
-  "La French Fries 🍟& El Gleason🦸🏻‍♂️": 6.5,
-  "Y los Chiefs?? 🤣": 5,
-  "Mond🌙": 6.5,
+  "French fries🍟 ft el “gleason” 🦸🏻‍♂️": 6.5,
+  "Itzae": 5,
+  "Mond 🌙": 6.5,
   "🦁": 6,
   "DR FOxter": 8,
   "Chi que chi! Indiana Hoosiers": 4,
