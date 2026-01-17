@@ -84,16 +84,22 @@ const ImgContainer = styled.div`
 
 const PlayoffsRanking = ({ events }) => {
   const competitions = events.map((event) => event.competitions[0]);
-  const competitors = competitions.flatMap((competition) => competition.competitors);
+  const competitors = competitions.flatMap(
+    (competition) => competition.competitors,
+  );
 
   const [selectedItem, setSelectedItem] = useState(null);
 
   const calculatePoints = () => {
     const puntosRonda = {};
-    playersData.forEach(p => puntosRonda[p.nombre] = 0);
+    const pointsDetails = {};
+    playersData.forEach((p) => {
+      puntosRonda[p.nombre] = 0;
+      pointsDetails[p.nombre] = {};
+    });
 
     const currentCompetitions = competitions.filter(
-      (competition) => competition.status.type.name !== "STATUS_SCHEDULED"
+      (competition) => competition.status.type.name !== "STATUS_SCHEDULED",
     );
 
     currentCompetitions.forEach((competition) => {
@@ -113,57 +119,78 @@ const PlayoffsRanking = ({ events }) => {
 
       if (!winnerName) return;
 
-      let correctWinners = playersData.map(player => {
-        const homePrediction = player[home.team.name.toLowerCase()];
-        const awayPrediction = player[away.team.name.toLowerCase()];
-        const predWinner =
-          homePrediction > awayPrediction
-            ? home.team.name.toLowerCase()
-            : awayPrediction > homePrediction
-            ? away.team.name.toLowerCase()
-            : null;
+      const matchPoints = {};
 
-        if (predWinner === winnerName) {
-          puntosRonda[player.nombre] += 1; // Punto base
-          return {
-            nombre: player.nombre,
-            homePrediction, awayPrediction,
-            esExacto: homePrediction === homeScore && awayPrediction === awayScore,
-            noSePaso: homePrediction <= homeScore && awayPrediction <= awayScore,
-            diffTotal: Math.abs((homePrediction + awayPrediction) - (homeScore + awayScore))
-          };
-        }
-        return null;
-      }).filter(Boolean);
+      let correctWinners = playersData
+        .map((player) => {
+          const homePrediction = player[home.team.name.toLowerCase()];
+          const awayPrediction = player[away.team.name.toLowerCase()];
+          const predWinner =
+            homePrediction > awayPrediction
+              ? home.team.name.toLowerCase()
+              : awayPrediction > homePrediction
+                ? away.team.name.toLowerCase()
+                : null;
+
+          if (predWinner === winnerName) {
+            matchPoints[player.nombre] = 1; // Punto base
+            return {
+              nombre: player.nombre,
+              homePrediction,
+              awayPrediction,
+              esExacto:
+                homePrediction === homeScore && awayPrediction === awayScore,
+              noSePaso:
+                homePrediction <= homeScore && awayPrediction <= awayScore,
+              diffTotal: Math.abs(
+                homePrediction + awayPrediction - (homeScore + awayScore),
+              ),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
       if (correctWinners.length === 0) return;
 
       // 2. Regla marcador exacto (+2 PE)
-      const exactos = correctWinners.filter(c => c.esExacto);
+      const exactos = correctWinners.filter((c) => c.esExacto);
       if (exactos.length > 0) {
-        exactos.forEach(c => puntosRonda[c.nombre] += 2);
-        return; // Si hay exactos, se saltan las demás reglas de PE
+        exactos.forEach((c) => (matchPoints[c.nombre] += 2));
+      }
+      // 3. Regla cercanía sin pasarse (+1.5 PE)
+      else {
+        const sinPasarse = correctWinners.filter((c) => c.noSePaso);
+        if (sinPasarse.length > 0) {
+          const minDiff = Math.min(...sinPasarse.map((c) => c.diffTotal));
+          sinPasarse
+            .filter((c) => c.diffTotal === minDiff)
+            .forEach((c) => (matchPoints[c.nombre] += 1.5));
+        }
+        // 4. Regla menor diferencia si todos se pasaron (+1 PE)
+        else {
+          const minDiff = Math.min(...correctWinners.map((c) => c.diffTotal));
+          correctWinners
+            .filter((c) => c.diffTotal === minDiff)
+            .forEach((c) => (matchPoints[c.nombre] += 1));
+        }
       }
 
-      // 3. Regla cercanía sin pasarse (+1.5 PE)
-      const sinPasarse = correctWinners.filter(c => c.noSePaso);
-      if (sinPasarse.length > 0) {
-        const minDiff = Math.min(...sinPasarse.map(c => c.diffTotal));
-        sinPasarse.filter(c => c.diffTotal === minDiff)
-          .forEach(c => puntosRonda[c.nombre] += 1.5);
-      }
-      // 4. Regla menor diferencia si todos se pasaron (+1 PE)
-      else {
-        const minDiff = Math.min(...correctWinners.map(c => c.diffTotal));
-        correctWinners.filter(c => c.diffTotal === minDiff)
-          .forEach(c => puntosRonda[c.nombre] += 1);
-      }
+      Object.keys(matchPoints).forEach((playerName) => {
+        const pts = matchPoints[playerName];
+        if (pts > 0) {
+          puntosRonda[playerName] += pts;
+          pointsDetails[playerName][home.team.name.toLowerCase()] = pts;
+          pointsDetails[playerName][away.team.name.toLowerCase()] = pts;
+        }
+      });
     });
 
-    return puntosRonda;
+    return { totals: puntosRonda, details: pointsDetails };
   };
 
-  const currentpuntosRonda = calculatePoints();
+  const { totals: currentpuntosRonda, details: pointsDetails } =
+    calculatePoints();
 
   return (
     <StyledPaper elevation={3}>
@@ -221,25 +248,68 @@ const PlayoffsRanking = ({ events }) => {
                   isSelected={selectedItem === nombre}
                 >
                   <NameColumn>{nombre}</NameColumn>
-                  {competitors.map(({ team }, index) => (
-                    <ScoreCell
-                      key={team.shortDisplayName.toLowerCase()}
-                      sx={
-                        index % 2 === 1 && index !== competitors.length - 1
-                          ? { borderRight: "1px solid #e0e0e0" }
-                          : {}
-                      }
-                    >
-                      {Object.keys(predictions).length > 0
-                        ? predictions[team.shortDisplayName.toLowerCase()]
-                        : "-"}
-                    </ScoreCell>
-                  ))}
+                  {competitions.map((competition, index) => {
+                    const [home, away] = competition.competitors;
+                    const homeKey = home.team.shortDisplayName.toLowerCase();
+                    const awayKey = away.team.shortDisplayName.toLowerCase();
+                    const hasPredictions = Object.keys(predictions).length > 0;
+                    const earnedPoints = pointsDetails[nombre]?.[homeKey];
+
+                    return (
+                      <ScoreCell
+                        key={homeKey}
+                        colSpan={2}
+                        sx={{
+                          borderRight:
+                            index !== competitions.length - 1
+                              ? "1px solid #e0e0e0"
+                              : undefined,
+                        }}
+                      >
+                        <Stack alignItems="center">
+                          <Stack
+                            direction="row"
+                            justifyContent="space-around"
+                            width="100%"
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              {hasPredictions ? predictions[homeKey] : "-"}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              {hasPredictions ? predictions[awayKey] : "-"}
+                            </Typography>
+                          </Stack>
+                          {earnedPoints > 0 && (
+                            <Typography
+                              variant="caption"
+                              color="success.main"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              +{earnedPoints}
+                            </Typography>
+                          )}
+                        </Stack>
+                      </ScoreCell>
+                    );
+                  })}
                   <ResultColumn>
                     <Stack direction="row" spacing={1}>
-                      <MatchCount title="Puntos acumulados">{points[nombre]}</MatchCount>
-                      <MatchCount title="Puntos ronda actual">{currentpuntosRonda[nombre] || 0}</MatchCount>
-                      <MatchCount title="Suma total de puntos" hasMostWins={true}>
+                      <MatchCount title="Puntos acumulados">
+                        {points[nombre]}
+                      </MatchCount>
+                      <MatchCount title="Puntos ronda actual">
+                        {currentpuntosRonda[nombre] || 0}
+                      </MatchCount>
+                      <MatchCount
+                        title="Suma total de puntos"
+                        hasMostWins={true}
+                      >
                         {points[nombre] + (currentpuntosRonda[nombre] || 0)}
                       </MatchCount>
                     </Stack>
