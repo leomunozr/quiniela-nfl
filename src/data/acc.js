@@ -5,7 +5,7 @@ export const points = {
   "Itzae": 5,
   "Mond 🌙": 6.5,
   "🦁": 6,
-  "DR FOxter": 8,
-  "Chi que chi! Indiana Hoosiers": 4,
+  "DR Foxter": 8,
+  "Indiana Bloomington!!!": 4,
   "Dejan una": 2
 }
