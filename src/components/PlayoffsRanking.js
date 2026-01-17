@@ -12,6 +12,7 @@ import {
   TableCell,
   Stack,
   Tooltip,
+  Grid2,
 } from "@mui/material";
 
 import playersData from "../data/playersData";
@@ -71,16 +72,26 @@ const MatchCount = styled.div`
 `;
 
 const TeamLogo = styled.img`
-  width: 3em;
-  height: 3em;
+  width: 4em;
+  height: 4em;
+
+  @media (max-width: 600px) {
+    width: 2em;
+    height: 2em;
+  }
 `;
 
 const ImgContainer = styled.div`
+  padding: 10px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1.5);
+  transform: scale(1.2);
+  @media (max-width: 600px) {
+    padding: 15px;
+    transform: scale(1.8);
+  }
 `;
 
 const PlayoffsRanking = ({ events }) => {
@@ -206,6 +217,7 @@ const PlayoffsRanking = ({ events }) => {
               <NameColumn></NameColumn>
               {competitors.map(({ team }, index) => (
                 <TableCell
+                  padding="none"
                   key={team.name}
                   sx={{
                     background: `#${team.color}`,
@@ -300,7 +312,7 @@ const PlayoffsRanking = ({ events }) => {
                     );
                   })}
                   <ResultColumn>
-                    <Stack direction="row" spacing={1}>
+                    <Grid2 container spacing={1}>
                       <Tooltip title="Puntos acumulados" placement="top" enterTouchDelay={0}>
                         <MatchCount>
                           {points[nombre]}
@@ -318,7 +330,7 @@ const PlayoffsRanking = ({ events }) => {
                           {points[nombre] + (currentpuntosRonda[nombre] || 0)}
                         </MatchCount>
                       </Tooltip>
-                    </Stack>
+                    </Grid2>
                   </ResultColumn>
                 </HighlightedRow>
               ))}
