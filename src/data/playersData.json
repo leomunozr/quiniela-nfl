@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "timestamp": "2026-01-16T16:56:56.637Z",
+    "nombre": "Ya no hay buenos días, solo días",
+    "broncos": 31,
+    "bills": 28,
+    "seahawks": 28,
+    "49ers": 21,
+    "patriots": 21,
+    "texans": 24,
+    "bears": 10,
+    "rams": 21
+  },
+  {
+    "timestamp": "2026-01-16T18:30:39.593Z",
+    "nombre": "Muffin",
+    "broncos": 24,
+    "bills": 27,
+    "seahawks": 17,
+    "49ers": 10,
+    "patriots": 28,
+    "texans": 14,
+    "bears": 21,
+    "rams": 20
+  },
+  {
+    "timestamp": "2026-01-17T07:09:35.304Z",
+    "nombre": "Itzae",
+    "broncos": 17,
+    "bills": 24,
+    "seahawks": 13,
+    "49ers": 20,
+    "patriots": 24,
+    "texans": 21,
+    "bears": 17,
+    "rams": 13
+  },
+  {
+    "timestamp": "2026-01-17T17:16:49.497Z",
+    "nombre": "Mond 🌙",
+    "broncos": 24,
+    "bills": 27,
+    "seahawks": 20,
+    "49ers": 17,
+    "patriots": 23,
+    "texans": 17,
+    "bears": 21,
+    "rams": 24
+  },
+  {
+    "timestamp": "2026-01-17T19:58:43.198Z",
+    "nombre": "French fries🍟 ft el “gleason” 🦸🏻‍♂️",
+    "broncos": 17,
+    "bills": 24,
+    "seahawks": 17,
+    "49ers": 21,
+    "patriots": 20,
+    "texans": 16,
+    "bears": 17,
+    "rams": 20
+  },
+  {
+    "timestamp": "2026-01-17T20:38:32.823Z",
+    "nombre": "🦁",
+    "broncos": 20,
+    "bills": 24,
+    "seahawks": 22,
+    "49ers": 24,
+    "patriots": 23,
+    "texans": 20,
+    "bears": 18,
+    "rams": 25
+  },
+  {
+    "timestamp": "2026-01-17T20:52:23.147Z",
+    "nombre": "Indiana Bloomington!!!",
+    "broncos": 20,
+    "bills": 30,
+    "seahawks": 25,
+    "49ers": 16,
+    "patriots": 28,
+    "texans": 15,
+    "bears": 24,
+    "rams": 27
+  },
+  {
+    "timestamp": "2026-01-17T21:05:59.696Z",
+    "nombre": "Dejan una",
+    "broncos": 24,
+    "bills": 31,
+    "seahawks": 24,
+    "49ers": 27,
+    "patriots": 24,
+    "texans": 14,
+    "bears": 27,
+    "rams": 24
+  },
+  {
+    "timestamp": "2026-01-17T21:13:46.692Z",
+    "nombre": "DR Foxter",
+    "broncos": 17,
+    "bills": 21,
+    "seahawks": 24,
+    "49ers": 17,
+    "patriots": 21,
+    "texans": 17,
+    "bears": 17,
+    "rams": 14
+  }
+]
