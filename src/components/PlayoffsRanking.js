@@ -11,6 +11,7 @@ import {
   TableBody,
   TableCell,
   Stack,
+  Tooltip,
 } from "@mui/material";
 
 import playersData from "../data/playersData";
@@ -300,18 +301,23 @@ const PlayoffsRanking = ({ events }) => {
                   })}
                   <ResultColumn>
                     <Stack direction="row" spacing={1}>
-                      <MatchCount title="Puntos acumulados">
-                        {points[nombre]}
-                      </MatchCount>
-                      <MatchCount title="Puntos ronda actual">
-                        {currentpuntosRonda[nombre] || 0}
-                      </MatchCount>
-                      <MatchCount
-                        title="Suma total de puntos"
-                        hasMostWins={true}
-                      >
-                        {points[nombre] + (currentpuntosRonda[nombre] || 0)}
-                      </MatchCount>
+                      <Tooltip title="Puntos acumulados" placement="top" enterTouchDelay={0}>
+                        <MatchCount>
+                          {points[nombre]}
+                        </MatchCount>
+                      </Tooltip>
+                      <Tooltip title="Puntos ronda actual" placement="top" enterTouchDelay={0}>
+                        <MatchCount>
+                          {currentpuntosRonda[nombre] || 0}
+                        </MatchCount>
+                      </Tooltip>
+                      <Tooltip title="Suma total de puntos" placement="top" enterTouchDelay={0}>
+                        <MatchCount
+                          hasMostWins={true}
+                        >
+                          {points[nombre] + (currentpuntosRonda[nombre] || 0)}
+                        </MatchCount>
+                      </Tooltip>
                     </Stack>
                   </ResultColumn>
                 </HighlightedRow>
