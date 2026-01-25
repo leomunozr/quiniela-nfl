@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "timestamp": "2026-01-21T17:35:28.538Z",
+    "nombre": "🦁",
+    "broncos": 25,
+    "patriots": 19,
+    "seahawks": 20,
+    "rams": 24
+  },
+  {
+    "timestamp": "2026-01-22T01:12:56.834Z",
+    "nombre": "Será este el fin del hombre araña? 🕸️",
+    "broncos": 23,
+    "patriots": 21,
+    "seahawks": 41,
+    "rams": 38
+  },
+  {
+    "timestamp": "2026-01-24T00:39:31.293Z",
+    "nombre": "French Fries 🍟 y El \"Gleason\" 😎",
+    "broncos": 17,
+    "patriots": 23,
+    "seahawks": 27,
+    "rams": 24
+  },
+  {
+    "timestamp": "2026-01-25T08:00:27.986Z",
+    "nombre": "Mond 🌙",
+    "broncos": 23,
+    "patriots": 20,
+    "seahawks": 24,
+    "rams": 21
+  },
+  {
+    "timestamp": "2026-01-25T16:34:18.195Z",
+    "nombre": "Otra feliz semana de playoffs sin los Chiefs 🫶🏻",
+    "broncos": 24,
+    "patriots": 24,
+    "seahawks": 27,
+    "rams": 20
+  },
+  {
+    "timestamp": "2026-01-25T19:22:39.239Z",
+    "nombre": "Ya que se acabe esto :c",
+    "broncos": 14,
+    "patriots": 28,
+    "seahawks": 24,
+    "rams": 27
+  },
+  {
+    "timestamp": "2026-01-25T19:54:29.571Z",
+    "nombre": "Ya no es divertido dividir el premio. Miau ",
+    "broncos": 17,
+    "patriots": 28,
+    "seahawks": 28,
+    "rams": 21
+  }
+]
