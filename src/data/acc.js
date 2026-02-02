@@ -1,11 +1,9 @@
 export const points = {
-  "Ya no hay buenos días, solo días 🏈💛🖤": 11,
-  "Muffin": 6,
-  "French fries🍟 ft el “gleason” 🦸🏻‍♂️": 10.5,
-  "Itzae": 6,
-  "Mond 🌙": 9.5,
-  "🦁": 8,
-  "DR Foxter": 10,
-  "Indiana Bloomington!!!": 8.5,
-  "Dejan una": 3
-}
+  "🦁": 0,
+  "Será este el fin del hombre araña? 🕸️": 1,
+  "French Fries 🍟 y El \"Gleason\" 😎": 4.5,
+  "Mond 🌙": 1,
+  "Otra feliz semana de playoffs sin los Chiefs 🫶🏻": 2,
+  "Ya que se acabe esto :c": 1,
+  "Ya no es divertido dividir el premio  (=^･ω･^=)": 1,
+};
