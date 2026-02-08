@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "timestamp": "2026-02-06T23:46:11.829Z",
+    "nombre": "Gane quien gane, pierde la música :v",
+    "patriots": 20,
+    "seahawks": 31
+  },
+  {
+    "timestamp": "2026-02-08T22:57:28.054Z",
+    "nombre": "French fries 🍟 y El “Gleason” 😎",
+    "patriots": 21,
+    "seahawks": 24
+  },
+  {
+    "timestamp": "2026-02-08T23:23:45.324Z",
+    "nombre": "Diles",
+    "patriots": 35,
+    "seahawks": 21
+  }
+]
